@@ -5,7 +5,7 @@ module.exports = ({ mode }) => ({
   mode: mode || 'development',
   entry: './src/index.jsx',
   output: {
-    publicPath: '/',
+    publicPath: mode === 'development' ? '/' : '/controls-profile-tool',
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
