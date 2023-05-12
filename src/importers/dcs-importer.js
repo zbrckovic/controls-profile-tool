@@ -1,23 +1,27 @@
 import { readFile } from '../util/file'
+import { Device, mappingFactories } from '../hardware'
 
 export async function importControls (files) {
-  return Promise.all(Array.from(files).map(processFile)).then(results => {
-    const result = {}
-    results.forEach(({ device, controls }) => {
-      result[device] = controls
-    })
-    return result
-  })
+  return Promise.all(Array.from(files).map(processFile))
 }
 
-function getDeviceFromFilename(filename) {
+function getDeviceFromName(filename) {
+  if (filename.startsWith("T.16000M")) {
+    return Device.Thrustmaster_T16000M
+  } else {
+    return Device.Unknown
+  }
+}
+
+function getFilenameWithoutExtension(filename) {
   const lastIndexOfDot = filename.lastIndexOf('.')
   if (lastIndexOfDot === -1) return filename
   return filename.slice(0, lastIndexOfDot)
 }
 
 async function processFile (file) {
-  const device = getDeviceFromFilename(file.name)
+  const filename = getFilenameWithoutExtension(file.name)
+  const device = getDeviceFromName(filename)
   const text = await readFile(file)
   const doc = parseToDoc(text)
   const rows = doc.querySelectorAll('section > table > tbody > tr')
@@ -40,7 +44,7 @@ async function processFile (file) {
     controls[control] = { command, category, modifiers }
   })
 
-  return { device, controls }
+  return { device, mapping: mappingFactories[device](controls) }
 }
 
 const parseCombo = combo => {
