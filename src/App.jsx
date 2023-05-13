@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { DCSImporter } from './components/DCSImporter'
+import { MappingsOverview } from './components/MappingsOverview/MappingsOverview'
 
-import { importControls } from './importers/dcs-importer'
+export function App () {
+  const [devices, setDevices] = useState([])
 
-export const App = () => {
-  return <input multiple type="file" onChange={({ target: { files } }) => {
-    importControls(files).then(results => {
-      console.log(results)
-    })
-  }}/>
+  return <main>
+    <DCSImporter onChange={setDevices}/>
+    <MappingsOverview devices={devices}/>
+  </main>
 }
 
 

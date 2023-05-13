@@ -1,34 +1,20 @@
-import { readFile } from '../util/file'
-import { Device, mappingFactories } from '../hardware'
+import { readFile } from '../../util/file'
+import { parseFilename } from './parse-filename'
 
 export async function importControls (files) {
   return Promise.all(Array.from(files).map(processFile))
 }
 
-function getDeviceFromName(filename) {
-  if (filename.startsWith("T.16000M")) {
-    return Device.Thrustmaster_T16000M
-  } else {
-    return Device.Unknown
-  }
-}
-
-function getFilenameWithoutExtension(filename) {
-  const lastIndexOfDot = filename.lastIndexOf('.')
-  if (lastIndexOfDot === -1) return filename
-  return filename.slice(0, lastIndexOfDot)
-}
-
 async function processFile (file) {
-  const filename = getFilenameWithoutExtension(file.name)
-  const device = getDeviceFromName(filename)
+  const { name, id } = parseFilename(file.name)
+
   const text = await readFile(file)
   const doc = parseToDoc(text)
   const rows = doc.querySelectorAll('section > table > tbody > tr')
 
-  const controls = {}
+  const mapping = {}
 
-  rows.forEach(row => {
+  rows.forEach(function (row) {
     const cells = row.getElementsByTagName('td')
     if (cells.length === 0) return
 
@@ -41,13 +27,13 @@ async function processFile (file) {
     const category = categoryCell.innerHTML
 
     const { control, modifiers } = parseCombo(comboTxt)
-    controls[control] = { command, category, modifiers }
+    mapping[control] = { command, category, modifiers }
   })
 
-  return { device, mapping: mappingFactories[device](controls) }
+  return { name, id, mapping }
 }
 
-const parseCombo = combo => {
+function parseCombo (combo) {
   const elements = combo.split(' - ')
   if (elements.length === 1) {
     const [control] = elements
