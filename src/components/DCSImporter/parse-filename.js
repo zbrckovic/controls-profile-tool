@@ -18,8 +18,6 @@ function extractName(filename) {
 }
 
 function getStandardName (filename) {
-  console.log(filename)
-
   if (filename.startsWith('T.16000M')) {
     return DeviceName.Thrustmaster_T16000M
   }

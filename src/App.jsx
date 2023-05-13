@@ -7,7 +7,13 @@ export function App () {
 
   return <main>
     <DCSImporter onChange={setDevices}/>
-    <MappingsOverview devices={devices}/>
+    <MappingsOverview
+      devices={devices}
+      onChange={setDevices}
+      setModifierOwner={function (modifier, deviceId) {
+        console.log(modifier, deviceId)
+      }}
+    />
   </main>
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { importControls } from './import-controls'
+import { controlsImporter } from './import-controls'
 
 export function DCSImporter ({ onChange }) {
   return <div>
@@ -7,7 +7,7 @@ export function DCSImporter ({ onChange }) {
       multiple
       type="file"
       onChange={function ({ target: { files } }) {
-        importControls(files).then(onChange)
+        controlsImporter().importControls(files).then(onChange)
       }}
     />
   </div>
