@@ -1,5 +1,7 @@
+import { createDevice } from './device'
+
 /**
- * Internal names of devices.
+ * Internal name of a device.
  *
  * This enum can be considered a database of all devices known by this
  * application. If a device is missing from this list, that doesn't mean it's
@@ -9,8 +11,12 @@ export const DeviceName = {
   Thrustmaster_T16000M: 'Thrustmaster_T16000M'
 }
 
+/**
+ * Information about every device known by this application.
+ */
 export const devices = {
-  [DeviceName.Thrustmaster_T16000M]: {
+  [DeviceName.Thrustmaster_T16000M]: createDevice({
+    name: DeviceName.Thrustmaster_T16000M,
     manufacturer: 'Thrustmaster',
     model: 'T.16000M',
     controls: [
@@ -54,5 +60,5 @@ export const devices = {
       'JOY_BTN15',
       'JOY_BTN16'
     ]
-  }
+  })
 }

@@ -1,20 +1,19 @@
 import { readFile } from 'util/file'
 import { parseFilename } from './parse-filename'
-import { devices as devicesDB } from 'devices'
+import { devices } from 'hardware'
 
 export function controlsImporter () {
   return {
     async importControls (files) {
-      const devices = await Promise.all(Array.from(files).map(processFile))
+      const dcsDevices = await Promise.all(Array.from(files).map(processFile))
 
-      devices.forEach(function ({ name, id, mapping }) {
+      dcsDevices.forEach(function ({ name, id, mapping }) {
         Object.entries(mapping).forEach(function ([control, { modifiers }]) {
           Object.keys(modifiers).forEach(function (modifier) {
-            devices.find(function (device) {
-              if (device.name === undefined) return false
-              const controls = new Set(devicesDB[device.name].controls)
-              if (controls.has(control)) {
-                modifiers[modifier] = device.id
+            dcsDevices.find(function (dcsDevice) {
+              if (dcsDevice.name === undefined) return false
+              if (devices[dcsDevice.name].hasControl(control)) {
+                modifiers[modifier] = dcsDevice.id
               }
             })
           })
@@ -25,7 +24,7 @@ export function controlsImporter () {
         })
       })
 
-      return devices
+      return dcsDevices
     }
   }
 

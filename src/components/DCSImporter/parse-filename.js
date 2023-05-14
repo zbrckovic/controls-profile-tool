@@ -1,4 +1,4 @@
-import { DeviceName } from 'devices'
+import { DeviceName } from 'hardware'
 
 /**
  * Parses the name of the html file exported from DCS and returns an object

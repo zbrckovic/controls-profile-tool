@@ -1,5 +1,5 @@
 import React from 'react'
-import { devices as devicesDB } from 'devices'
+import { devices as internalDevices } from 'hardware'
 import styles from './MappingsOverview.module.css'
 
 export function MappingsOverview ({ devices = [], onChange, setModifierOwner }) {
@@ -128,7 +128,7 @@ function ModifierOwnerSelect ({ modifier, devices, value, onChange }) {
   const potentialModifierOwners = devices
     .filter(function (device) {
       if (device.name === undefined) return true
-      return devicesDB[device.name].controls.includes(modifier)
+      return internalDevices[device.name].hasControl(modifier)
     })
 
   return (
