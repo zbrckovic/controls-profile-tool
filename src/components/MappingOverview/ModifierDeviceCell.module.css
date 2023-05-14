@@ -1,0 +1,14 @@
+.root {
+    display: flex;
+    background: purple;
+}
+
+.ownerSelect {
+    background: red;
+    display: block;
+    flex: 1 0px;
+}
+.setToAllButton {
+    background: blue;
+    flex: 0 30px;
+}

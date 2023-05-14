@@ -1,5 +1,10 @@
 @import "normalize.css";
 
+html {
+    width: 100%;
+}
+
 body {
+    width: 100%;
     font-family: "Saira", sans-serif;
 }

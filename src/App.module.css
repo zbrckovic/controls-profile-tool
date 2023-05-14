@@ -1,0 +1,19 @@
+.root {
+    display: flex;
+    padding: 8px;
+}
+
+.importSection {
+    flex: 1 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.exportSection {
+    flex: 1 0;
+}
+
+.importer {
+    margin-bottom: 8px;
+}
+

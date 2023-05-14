@@ -1,0 +1,24 @@
+.root {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.table {
+    width: 100%;
+}
+.controlColumn {
+    width: 10px;
+}
+
+.commandColumn {
+}
+
+.modifiersColumn {
+    min-width: 100px;
+    width: 300px;
+}
+
+.modifiersTable {
+    width: 100%;
+}
