@@ -1,27 +1,54 @@
 import { DeviceName } from 'devices'
 
+/**
+ * Parses the name of the html file exported from DCS and returns an object
+ * containing the internal name of the device (in case the device is known to
+ * this application) and an id which is a unique string identifying this device.
+ */
 export function parseFilename (filename) {
   filename = getFilenameWithoutExtension(filename)
   const name = extractName(filename)
-  return { name: getStandardName(name), id: filename, }
+  return {
+    name: determineInternalName(name),
+    // The whole filename is a good id since it will surely be unique.
+    id: filename,
+  }
 }
 
+/**
+ * Returns the part of the filename without the `.html` extension.
+ */
 function getFilenameWithoutExtension (filename) {
   const lastIndexOfDot = filename.lastIndexOf('.')
   if (lastIndexOfDot === -1) return filename
   return filename.slice(0, lastIndexOfDot)
 }
 
-function extractName(filename) {
+/**
+ * Extracts the name of the device from the filename.
+ *
+ * Some filenames contain a device model name followed by an id enclosed in
+ * curly braces. In such cases it removes this latter part and returns only the
+ * device model name.
+ */
+function extractName (filename) {
   const match = filename.match(deviceNameWithIdRegex)
   return match === null ? filename : match[0]
 }
 
-function getStandardName (filename) {
+/**
+ * Tries to determine the internal name of the device represented by `filename`
+ * in case the device is known to the application. If the device is unknown, it
+ * returns `undefined`.
+ */
+function determineInternalName (filename) {
   if (filename.startsWith('T.16000M')) {
     return DeviceName.Thrustmaster_T16000M
   }
 }
 
-// For filenames which have device model name followed by an id inside curly braces
+/**
+ * For filenames which have a device model name followed by an id inside curly
+ * braces.
+ */
 const deviceNameWithIdRegex = /^(.*) \{([^{]+)}$/

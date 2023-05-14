@@ -1,6 +1,6 @@
 import { readFile } from 'util/file'
 import { parseFilename } from './parse-filename'
-import { deviceControls } from 'devices'
+import { devices as devicesDB } from 'devices'
 
 export function controlsImporter () {
   return {
@@ -12,7 +12,7 @@ export function controlsImporter () {
           Object.keys(modifiers).forEach(function (modifier) {
             devices.find(function (device) {
               if (device.name === undefined) return false
-              const controls = new Set(deviceControls[device.name])
+              const controls = new Set(devicesDB[device.name].controls)
               if (controls.has(control)) {
                 modifiers[modifier] = device.id
               }
