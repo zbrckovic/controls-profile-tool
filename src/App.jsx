@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import { DCSImporter } from './components/DCSImporter'
-import { MappingsOverview } from './components/MappingsOverview/MappingsOverview'
+import { MappingOverview } from './components/MappingOverview'
+import { DeviceConfigsCtx } from './contexts'
 
 export const App = () => {
-  const [devices, setDevices] = useState([])
+  const [deviceConfigs, setDeviceConfigs] = useState([])
 
   return <main>
-    <DCSImporter onChange={setDevices}/>
-    <MappingsOverview
-      devices={devices}
-      onChange={setDevices}
-      setModifierOwner={(modifier, deviceId) => {
-        console.log(modifier, deviceId)
-      }}
-    />
+    <DeviceConfigsCtx.Provider value={deviceConfigs}>
+      <DCSImporter onChange={setDeviceConfigs}/>
+      <MappingOverview
+        deviceConfigs={deviceConfigs}
+        onChange={setDeviceConfigs}
+        setModifierOwner={(modifier, deviceId) => {
+          console.log(modifier, deviceId)
+        }}
+      />
+    </DeviceConfigsCtx.Provider>
   </main>
 }
 

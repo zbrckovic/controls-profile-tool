@@ -1,5 +1,5 @@
 import React from 'react'
-import { controlsImporter } from './import-controls'
+import { importDeviceConfigs } from './import-device-configs'
 import styles from './DCSImporter.module.css'
 
 export const DCSImporter = ({ onChange }) =>
@@ -8,7 +8,7 @@ export const DCSImporter = ({ onChange }) =>
       multiple
       type="file"
       onChange={({ target: { files } }) => {
-        controlsImporter().importControls(files).then(onChange)
+        importDeviceConfigs(files).then(onChange)
       }}
     />
   </div>
