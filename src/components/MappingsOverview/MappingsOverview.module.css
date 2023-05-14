@@ -1,0 +1,18 @@
+.root {
+}
+
+.root .device {
+    border: 1px solid red;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.root .device .mapping {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+

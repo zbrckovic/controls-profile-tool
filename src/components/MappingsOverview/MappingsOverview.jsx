@@ -1,8 +1,9 @@
 import React from 'react'
-import { deviceControls } from '../../devices'
+import { deviceControls } from 'devices'
+import styles from './MappingsOverview.module.css'
 
 export function MappingsOverview ({ devices = [], onChange, setModifierOwner }) {
-  return <div>
+  return <div className={styles.root}>
     {devices.map(function ({ id, name, mapping }, i) {
       return <Device
         devices={devices}
@@ -25,7 +26,7 @@ export function MappingsOverview ({ devices = [], onChange, setModifierOwner }) 
 }
 
 export function Device ({ devices, name, id, mapping = {}, onChange, setModifierOwner }) {
-  return <div style={{ border: '1px solid red', width: '500px', display: 'flex', flexDirection: 'column' }}>
+  return <div className={styles.device}>
     <dl>
       <dt>Name</dt>
       <dd>{name ?? 'unrecognized'}</dd>
@@ -34,7 +35,7 @@ export function Device ({ devices, name, id, mapping = {}, onChange, setModifier
       <dd>{id}</dd>
     </dl>
 
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className={styles.mapping}>
       {
         Object.entries(mapping).map(function ([control, { command, category, modifiers }]) {
           return <div key={control}>

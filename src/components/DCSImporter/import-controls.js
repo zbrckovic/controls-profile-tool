@@ -1,6 +1,6 @@
-import { readFile } from '../../util/file'
+import { readFile } from 'util/file'
 import { parseFilename } from './parse-filename'
-import { deviceControls } from '../../devices'
+import { deviceControls } from 'devices'
 
 export function controlsImporter () {
   return {

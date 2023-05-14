@@ -1,4 +1,4 @@
-import { DeviceName } from '../../devices'
+import { DeviceName } from 'devices'
 
 export function parseFilename (filename) {
   filename = getFilenameWithoutExtension(filename)
