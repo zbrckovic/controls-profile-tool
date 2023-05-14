@@ -1,8 +1,8 @@
-import { Card } from '../Card'
+import { Card } from '../general/Card'
 import styles from './DeviceConfig.module.css'
-import { ModifierDeviceCell } from './ModifierDeviceCell'
 import React from 'react'
 import classNames from 'classnames'
+import { ModifiersTable } from './ModifiersTable'
 
 export const DeviceConfig = ({
   deviceConfig: { id, device, mapping },
@@ -59,9 +59,15 @@ const ControlConfigTableRow = ({
   setModifierOwner
 }) =>
   <tr key={control}>
-    <td>{control}</td>
-    <td>{command}</td>
-    <td>
+    <td className={styles.controlColumn}
+        title={control}>
+      {control}
+    </td>
+    <td className={styles.commandColumn}
+        title={command}>
+      {command}
+    </td>
+    <td className={styles.modifiersColumn}>
       <ModifiersTable
         modifiers={modifiers}
         onChange={newModifiers => {
@@ -72,59 +78,3 @@ const ControlConfigTableRow = ({
     </td>
   </tr>
 
-const ModifiersTable = ({
-  modifiers,
-  onChange,
-  setModifierOwner
-}) => {
-  const modifiersEntries = Object.entries(modifiers)
-
-  return (
-    modifiersEntries.length > 0 &&
-    <table className={styles.modifiersTable}>
-      <tbody>
-      {
-        modifiersEntries.map(([modifier, deviceId], i) => (
-          <ModifierRow
-            key={modifier}
-            modifier={modifier}
-            deviceId={deviceId}
-            onChange={newDeviceId => {
-              const newModifiers = Object.fromEntries([
-                ...modifiersEntries.slice(0, i),
-                [modifier, newDeviceId],
-                ...modifiersEntries.slice(i + 1),
-              ])
-              onChange(newModifiers)
-            }}
-            setModifierOwner={() => {
-              setModifierOwner(modifier, deviceId)
-            }}
-          />
-        ))
-      }
-      </tbody>
-    </table>
-  )
-}
-
-const ModifierRow = ({
-  modifier,
-  deviceId,
-  onChange,
-  setModifierOwner
-}) => {
-  return (
-    <tr key={modifier}>
-      <td>{modifier}</td>
-      <td>
-        <ModifierDeviceCell
-          modifier={modifier}
-          deviceId={deviceId}
-          onChange={onChange}
-          setModifierOwner={setModifierOwner}
-        />
-      </td>
-    </tr>
-  )
-}

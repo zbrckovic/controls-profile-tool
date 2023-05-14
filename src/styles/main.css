@@ -1,10 +1,11 @@
 @import "normalize.css";
 
 html {
-    width: 100%;
 }
 
 body {
-    width: 100%;
+    border: 1px solid black;
     font-family: "Saira", sans-serif;
+    margin: auto;
+    width: 1280px;
 }

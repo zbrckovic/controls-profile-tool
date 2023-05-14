@@ -1,12 +1,10 @@
 .root {
-    display: flex;
     padding: 8px;
+    display: flex;
+    flex-direction: column;
 }
 
 .importSection {
-    flex: 1 0;
-    display: flex;
-    flex-direction: column;
 }
 
 .exportSection {

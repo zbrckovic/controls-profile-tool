@@ -1,5 +1,5 @@
 .root {
-    padding: 8px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
 }
@@ -7,18 +7,35 @@
 .table {
     width: 100%;
 }
+
+.table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table > tbody > tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+.table > thead {
+    background: black;
+    color: white;
+}
+
+
 .controlColumn {
-    width: 10px;
+    font-weight: bold;
+    width: 200px;
+}
+
+.table > tbody .controlColumn {
+    color: darkred;
 }
 
 .commandColumn {
+    font-family: "Saira Condensed", sans-serif;
 }
 
 .modifiersColumn {
-    min-width: 100px;
-    width: 300px;
-}
-
-.modifiersTable {
-    width: 100%;
+    width: 600px;
 }

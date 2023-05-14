@@ -1,0 +1,32 @@
+.modifiersTable {
+    width: 100%;
+}
+
+.modifiersTable td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modifierCell {
+    width: 200px;
+    font-weight: bold;
+    color: darkred;
+}
+
+.modifierOwnerCell {
+}
+
+.modifierOwnerCell > div {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.ownerSelect {
+    margin-right: 8px;
+    max-width: 300px;
+}
+.setToAllButton {
+    flex: 0 100px;
+    cursor: pointer;
+}
