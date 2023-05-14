@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { DCSImporter } from './components/DCSImporter'
 import { MappingsOverview } from './components/MappingsOverview/MappingsOverview'
 
-export function App () {
+export const App = () => {
   const [devices, setDevices] = useState([])
 
   return <main>
@@ -10,7 +10,7 @@ export function App () {
     <MappingsOverview
       devices={devices}
       onChange={setDevices}
-      setModifierOwner={function (modifier, deviceId) {
+      setModifierOwner={(modifier, deviceId) => {
         console.log(modifier, deviceId)
       }}
     />

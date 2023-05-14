@@ -1,4 +1,4 @@
-export function createDevice ({ name, manufacturer, model, controls }) {
+export const createDevice = ({ name, manufacturer, model, controls }) => {
   const device = Object.create(behavior)
 
   return Object.assign(device, {

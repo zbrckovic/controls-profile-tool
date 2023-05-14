@@ -2,14 +2,13 @@ import React from 'react'
 import { controlsImporter } from './import-controls'
 import styles from './DCSImporter.module.css'
 
-export function DCSImporter ({ onChange }) {
-  return <div className={styles.root}>
+export const DCSImporter = ({ onChange }) =>
+  <div className={styles.root}>
     <input
       multiple
       type="file"
-      onChange={function ({ target: { files } }) {
+      onChange={({ target: { files } }) => {
         controlsImporter().importControls(files).then(onChange)
       }}
     />
   </div>
-}
