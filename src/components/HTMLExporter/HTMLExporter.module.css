@@ -1,10 +1,12 @@
 .root {
-    padding: 8px;
     display: flex;
     flex-direction: column;
 }
 
-.importer {
+.select {
     margin-bottom: 8px;
 }
 
+.preview {
+    height: 1080px;
+}

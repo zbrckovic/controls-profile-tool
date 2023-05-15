@@ -51,6 +51,11 @@ module.exports = (env, argv) => {
             'css-loader'
           ],
           exclude: /\.module\.css$/,
+        },
+        {
+          test: /\.html$/,
+          type: 'asset/resource',
+          include: [path.resolve(__dirname, './src/templates')]
         }
       ]
     },

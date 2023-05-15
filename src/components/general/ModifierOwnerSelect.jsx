@@ -19,12 +19,12 @@ export const ModifierOwnerSelect = ({
   return (
     <select
       className={className}
-      value={owner}
+      value={owner === undefined ? '' : owner}
       onChange={({ target: { value: deviceId } }) => {
         onChange(deviceId === '' ? undefined : deviceId)
       }}
     >
-      <option key={null} value={undefined}></option>
+      <option key={null} value={''}></option>
       {
         potentialModifierOwners.map(({ id }) => (
           <option key={id} value={id}>
