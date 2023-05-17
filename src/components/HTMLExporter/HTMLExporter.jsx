@@ -1,25 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-const ctx = require.context('templates', false, /\.html$/)
-
 import styles from './HTMLExporter.module.css'
+import { templateFiles } from '../../templates'
+import { TemplateFilePicker } from './TemplatePicker'
 
 const DEVICE_ATTRIBUTE = 'data-device'
 const CONTROL_ATTRIBUTE = 'data-ctrl'
 
-const templates = {}
-ctx
-  .keys()
-  .filter(key => key.startsWith('.'))
-  .forEach(key => {
-    const name = key.slice(2)
-    templates[name] = ctx(key)
-  })
-
-export const HTMLExporter = ({
-  deviceConfigs = []
-}) => {
-  const [templateName, setTemplateName] = useState(Object.keys(templates)[0])
+export const HTMLExporter = ({ deviceConfigs = [] }) => {
+  const [templateFilename, setTemplateFilename] = useState(undefined)
   const [elementsAndTemplateDevices, setElementsAndTemplateDevices] = useState()
 
   const ref = useCallback(iframeEl => {
@@ -42,12 +31,11 @@ export const HTMLExporter = ({
 
   useEffect(() => {
     if (elementsAndTemplateDevices === undefined) return
-    const {elements, templateDevices} = elementsAndTemplateDevices
+    const { elements, templateDevices } = elementsAndTemplateDevices
 
     const importedDevices = Object.values(templateDevices)
 
     if (importedDevices.some(device => device === undefined)) return
-
 
     const deviceConfigsById = {}
     deviceConfigs.forEach(deviceConfig => {
@@ -118,25 +106,17 @@ export const HTMLExporter = ({
         </tbody>
       </table>
     }
-    <select
-      className={styles.select}
-      value={templateName === undefined ? '' : templateName}
-      onChange={({ target: { value } }) => {
-        setTemplateName(value === '' ? undefined : value)
-      }}>
-      <option value={''}></option>
-      {
-        Object.entries(templates).map(([name, url]) =>
-          <option key={name} value={name}>{name}</option>
-        )
-      }
-    </select>
+    <TemplateFilePicker
+      className={styles.templateFileSelect}
+      templateFiles={templateFiles}
+      value={templateFilename}
+      onChange={setTemplateFilename}/>
     {
-      templateName !== undefined &&
+      templateFilename !== undefined &&
       <iframe
         ref={ref}
-        className={styles.preview}
-        src={templates[templateName]}>
+        className={styles.templateFilePreview}
+        src={templateFilename.url}>
 
       </iframe>
     }

@@ -3,10 +3,10 @@
     flex-direction: column;
 }
 
-.select {
+.templateFileSelect {
     margin-bottom: 8px;
 }
 
-.preview {
+.templateFilePreview {
     height: 1080px;
 }
