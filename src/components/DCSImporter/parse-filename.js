@@ -1,4 +1,4 @@
-import { DeviceName } from 'hardware'
+import { DeviceId } from 'hardware'
 
 /**
  * Parses the name of the html file exported from DCS and returns an object
@@ -43,7 +43,7 @@ const extractName = filename => {
  */
 const determineInternalName = filename => {
   if (filename.startsWith('T.16000M')) {
-    return DeviceName.Thrustmaster_T16000M
+    return DeviceId.Thrustmaster_T16000M
   }
 }
 

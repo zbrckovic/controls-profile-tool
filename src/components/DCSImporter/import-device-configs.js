@@ -1,6 +1,7 @@
 import { readFile } from 'util/file'
 import { parseFilename } from './parse-filename'
-import { devices } from 'hardware'
+import { devicesById } from 'hardware'
+import { createDeviceConfig } from 'model/device-config'
 
 export const importDeviceConfigs = async files => {
   const deviceConfigs = await Promise.all(Array.from(files).map(processFile))
@@ -37,8 +38,8 @@ const processFile = async file => {
   const { name, id } = parseFilename(file.name)
   const text = await readFile(file)
   const mapping = parseFileContent(text)
-  const device = name === undefined ? undefined : devices[name]
-  return { device, id, mapping }
+  const device = name === undefined ? undefined : devicesById[name]
+  return createDeviceConfig({ device, id, mapping })
 }
 
 const parseFileContent = text => {

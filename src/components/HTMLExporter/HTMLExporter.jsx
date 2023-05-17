@@ -5,7 +5,6 @@ import { templateFiles } from '../../templates'
 import { TemplateFilePicker } from './TemplatePicker'
 import { createRoot } from 'react-dom/client'
 import { ControlField } from '../ControlField'
-import { DevicePicker } from '../general/DevicePicker'
 
 const DEVICE_ATTRIBUTE = 'data-device'
 const CONTROL_ATTRIBUTE = 'data-ctrl'
@@ -13,8 +12,6 @@ const CONTROL_ATTRIBUTE = 'data-ctrl'
 export const HTMLExporter = ({ deviceConfigs = [] }) => {
   const [templateFilename, setTemplateFilename] = useState(undefined)
   const [deviceTemplates, setDeviceTemplates] = useState({})
-
-  console.log(deviceConfigs)
 
   const ref = useCallback(iframeEl => {
     iframeEl.addEventListener('load', () => {
