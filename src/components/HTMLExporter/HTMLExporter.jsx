@@ -3,60 +3,68 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styles from './HTMLExporter.module.css'
 import { templateFiles } from '../../templates'
 import { TemplateFilePicker } from './TemplatePicker'
+import { createRoot } from 'react-dom/client'
+import { ControlField } from '../ControlField'
+import { DevicePicker } from '../general/DevicePicker'
 
 const DEVICE_ATTRIBUTE = 'data-device'
 const CONTROL_ATTRIBUTE = 'data-ctrl'
 
 export const HTMLExporter = ({ deviceConfigs = [] }) => {
   const [templateFilename, setTemplateFilename] = useState(undefined)
-  const [elementsAndTemplateDevices, setElementsAndTemplateDevices] = useState()
+  const [deviceTemplates, setDeviceTemplates] = useState({})
+
+  console.log(deviceConfigs)
 
   const ref = useCallback(iframeEl => {
     iframeEl.addEventListener('load', () => {
       const doc = iframeEl.contentWindow.document
-      const elements = doc.querySelectorAll(`[${DEVICE_ATTRIBUTE}]`)
-      const templateDevices = {}
 
-      elements.forEach(el => {
-        const device = el.getAttribute(DEVICE_ATTRIBUTE)
-        templateDevices[device] = undefined
+      const newDeviceTemplatesById = {}
+      doc.querySelectorAll(`[${DEVICE_ATTRIBUTE}]`).forEach(el => {
+        const templateDeviceId = el.getAttribute(DEVICE_ATTRIBUTE)
+        const templateControl = el.getAttribute(CONTROL_ATTRIBUTE)
+
+        let deviceTemplate = newDeviceTemplatesById[templateDeviceId]
+        if (deviceTemplate === undefined) {
+          deviceTemplate = ({ deviceId: undefined, fields: {} })
+          newDeviceTemplatesById[templateDeviceId] = deviceTemplate
+        }
+        deviceTemplate.fields[templateControl] = createRoot(el)
       })
 
-      setElementsAndTemplateDevices({
-        elements,
-        templateDevices
-      })
+      setDeviceTemplates(newDeviceTemplatesById)
     })
   }, [])
 
   useEffect(() => {
-    if (elementsAndTemplateDevices === undefined) return
-    const { elements, templateDevices } = elementsAndTemplateDevices
+    const deviceTemplatesList = Object.values(deviceTemplates)
 
-    const importedDevices = Object.values(templateDevices)
-
-    if (importedDevices.some(device => device === undefined)) return
+    if (deviceTemplatesList.some(({ deviceId }) => deviceId === undefined)) return
 
     const deviceConfigsById = {}
     deviceConfigs.forEach(deviceConfig => {
       deviceConfigsById[deviceConfig.id] = deviceConfig
     })
 
-    elements.forEach(element => {
-      const templateDevice = element.getAttribute(DEVICE_ATTRIBUTE)
-      const control = element.getAttribute(CONTROL_ATTRIBUTE)
+    deviceTemplatesList.forEach(({ deviceId, fields }) => {
+      const deviceConfig = deviceConfigsById[deviceId]
 
-      const importedDevice = templateDevices[templateDevice]
-      const device = deviceConfigsById[importedDevice]
-
-      const commandConfig = device.mapping[control]
-      element.innerHTML = commandConfig?.command
+      Object.entries(fields).forEach(([control, field]) => {
+        field.render(<ControlField
+          control={deviceConfig.mapping[control].command}/>)
+      })
     })
-  }, [elementsAndTemplateDevices])
+  }, [deviceConfigs, deviceTemplates])
 
   return <div className={styles.root}>
+    <TemplateFilePicker
+      className={styles.templateFileSelect}
+      templateFiles={templateFiles}
+      value={templateFilename}
+      onChange={setTemplateFilename}/>
     {
-      elementsAndTemplateDevices !== undefined &&
+      Object.keys(deviceTemplates).length > 0 &&
       <table>
         <thead>
         <tr>
@@ -70,20 +78,20 @@ export const HTMLExporter = ({ deviceConfigs = [] }) => {
         </thead>
         <tbody>
         {
-          Object.entries(elementsAndTemplateDevices.templateDevices).map(([templateDevice, importedDevice]) =>
-            <tr key={templateDevice}>
+          Object.entries(deviceTemplates).map(([templateDeviceId, { deviceId }]) =>
+            <tr key={templateDeviceId}>
               <td>
-                {templateDevice}
+                {templateDeviceId}
               </td>
               <td>
                 <select
-                  value={importedDevice === undefined ? '' : importedDevice}
+                  value={deviceId === undefined ? '' : deviceId}
                   onChange={({ target: { value } }) => {
-                    setElementsAndTemplateDevices(old => ({
+                    setDeviceTemplates(old => ({
                       ...old,
-                      templateDevices: {
-                        ...old.templateDevices,
-                        [templateDevice]: value
+                      [templateDeviceId]: {
+                        ...old[templateDeviceId],
+                        deviceId: value
                       }
                     }))
                   }}>
@@ -106,17 +114,12 @@ export const HTMLExporter = ({ deviceConfigs = [] }) => {
         </tbody>
       </table>
     }
-    <TemplateFilePicker
-      className={styles.templateFileSelect}
-      templateFiles={templateFiles}
-      value={templateFilename}
-      onChange={setTemplateFilename}/>
     {
       templateFilename !== undefined &&
       <iframe
         ref={ref}
         className={styles.templateFilePreview}
-        src={templateFilename.url}>
+        src={templateFiles[templateFilename]}>
 
       </iframe>
     }
