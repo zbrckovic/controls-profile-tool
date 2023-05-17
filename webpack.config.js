@@ -8,14 +8,14 @@ module.exports = (env, argv) => {
 
   return ({
     mode,
-    entry: './src/index.jsx',
+    entry: './src/index.tsx',
     output: {
       publicPath: isDevelopment ? '/' : '/controls-profile-tool',
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js'
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.css'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
       modules: [
         path.resolve(__dirname, './node_modules'),
         path.resolve(__dirname, './src')
@@ -24,7 +24,7 @@ module.exports = (env, argv) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(ts|tsx|js|jsx)$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
         },

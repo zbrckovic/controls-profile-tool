@@ -1,8 +1,9 @@
-export const readFile = async file =>
+export const readFile = async (file: File) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.readAsText(file, 'UTF-8')
-    reader.onload = ({ target: { result } }) => {
+    // @ts-ignore
+      reader.onload = ({ target: { result } }) => {
       resolve(result)
     }
     reader.onerror = err => {

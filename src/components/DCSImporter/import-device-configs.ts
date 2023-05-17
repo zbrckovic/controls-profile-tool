@@ -1,15 +1,16 @@
 import { readFile } from 'util/file'
 import { parseFilename } from './parse-filename'
 import { devicesById } from 'hardware'
-import { createDeviceConfig } from 'model/device-config'
+import { DeviceConfig } from 'model/device-config'
+import { ControlConfig } from '../../model/control-config'
 
-export const importDeviceConfigs = async files => {
+export const importDeviceConfigs = async (files: File[]) => {
   const deviceConfigs = await Promise.all(Array.from(files).map(processFile))
   fillInDeviceIdsForModifiers(deviceConfigs)
   return deviceConfigs
 }
 
-const fillInDeviceIdsForModifiers = deviceConfigs => {
+const fillInDeviceIdsForModifiers = (deviceConfigs: DeviceConfig[]) => {
   deviceConfigs.forEach(({ mapping }) => {
     Object.values(mapping).forEach(({ modifiers }) => {
       Object.keys(modifiers).forEach(modifier => {
@@ -28,21 +29,21 @@ const fillInDeviceIdsForModifiers = deviceConfigs => {
  * modifier, and it has a recognized device which has the modifier among
  * controls.
  */
-const findTheModifierOwner = (deviceConfigs, modifier) =>
+const findTheModifierOwner = (deviceConfigs: DeviceConfig[], modifier: string) =>
   deviceConfigs.find(deviceConfig => {
-    return !Object.hasOwn(deviceConfig.mapping, modifier) &&
+    return !(deviceConfig.mapping.hasOwnProperty(modifier)) &&
       deviceConfig.device?.hasControl(modifier)
   })
 
-const processFile = async file => {
+const processFile = async (file: File) => {
   const { name, id } = parseFilename(file.name)
   const text = await readFile(file)
   const mapping = parseFileContent(text)
   const device = name === undefined ? undefined : devicesById[name]
-  return createDeviceConfig({ device, id, mapping })
+  return new DeviceConfig(id, device, mapping)
 }
 
-const parseFileContent = text => {
+const parseFileContent = (text: string) => {
   const doc = parseToDoc(text)
   const rows = doc.querySelectorAll('section > table > tbody > tr')
 
@@ -62,7 +63,7 @@ const parseFileContent = text => {
 
     const { control, modifiers } = parseCombo(comboTxt)
 
-    mapping[control] = { command, category, modifiers }
+    mapping[control] = new ControlConfig(command, category, modifiers)
   })
 
   return mapping

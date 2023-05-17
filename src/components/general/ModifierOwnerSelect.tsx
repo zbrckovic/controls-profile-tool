@@ -1,7 +1,14 @@
-import React, { useContext } from 'react'
+import React, {FC, useContext} from 'react'
 import { DeviceConfigsCtx } from 'contexts'
 
-export const ModifierOwnerSelect = ({
+interface Props {
+  className?: string,
+  modifier: string,
+  owner: string,
+  onChange: (owner?: string) => void
+}
+
+export const ModifierOwnerSelect: FC<Props> = ({
   className,
   modifier,
   owner,
@@ -10,7 +17,7 @@ export const ModifierOwnerSelect = ({
   const deviceConfigs = useContext(DeviceConfigsCtx)
 
   const potentialModifierOwners = deviceConfigs.filter(deviceConfig =>
-    !Object.hasOwn(deviceConfig.mapping, modifier) &&
+    !(deviceConfig.mapping.hasOwnProperty(modifier)) &&
     (
       deviceConfig.device === undefined ||
       deviceConfig.device.hasControl(modifier))
