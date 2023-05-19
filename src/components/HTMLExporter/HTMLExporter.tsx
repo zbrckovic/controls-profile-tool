@@ -20,7 +20,9 @@ interface State {
 }
 
 export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
-    const [templateFilename, setTemplateFilename] = useState<string | undefined>(undefined)
+    const [templateFilename, setTemplateFilename] = useState<string | undefined>(() => {
+        return Object.keys(templateFiles)[0]
+    })
     const [state, setState] = useState<State>({deviceTemplatesById: {}, devicesMapping: {}})
 
     const ref = useCallback((iframeEl: HTMLIFrameElement | null) => {
