@@ -1,13 +1,13 @@
-import React, {FC, useContext} from 'react'
 import {DeviceAssignmentsCtx} from 'contexts'
-import {Control} from "domain/types";
-import {ExternalDeviceId} from "domain/import/types";
+import {ImportedDeviceId} from 'domain/import/types'
+import {Control} from 'domain/types'
+import React, {FC, useContext} from 'react'
 
 interface Props {
     className?: string,
     modifier: Control,
-    value?: ExternalDeviceId,
-    onChange: (owner?: ExternalDeviceId) => void
+    value?: ImportedDeviceId,
+    onChange: (owner?: ImportedDeviceId) => void
 }
 
 export const ModifierOwnerSelect: FC<Props> = ({

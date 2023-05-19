@@ -1,5 +1,5 @@
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ExternalDeviceId} from 'domain/import/types'
+import {ImportedDeviceId} from 'domain/import/types'
 import React, {FC, useCallback, useEffect, useState} from 'react'
 import {DeviceTemplate, TemplateDeviceId, TemplateField} from 'services/html-export/device-template'
 import {templateFiles} from 'templates'
@@ -15,23 +15,20 @@ interface Props {
 }
 
 interface State {
-    deviceTemplatesById: Record<ExternalDeviceId, DeviceTemplate>,
-    devicesMapping: Record<TemplateDeviceId, ExternalDeviceId | undefined>
+    deviceTemplatesById: Record<TemplateDeviceId, DeviceTemplate>,
+    devicesMapping: Record<TemplateDeviceId, ImportedDeviceId | undefined>
 }
 
 export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
     const [templateFilename, setTemplateFilename] = useState<string | undefined>(undefined)
-    const [state, setState] = useState<State>({
-        deviceTemplatesById: {},
-        devicesMapping: {}
-    })
+    const [state, setState] = useState<State>({deviceTemplatesById: {}, devicesMapping: {}})
 
     const ref = useCallback((iframeEl: HTMLIFrameElement) => {
         iframeEl.addEventListener('load', () => {
             const doc = iframeEl.contentWindow?.document
             if (!doc) return
 
-            const newDeviceTemplatesById: Record<ExternalDeviceId, DeviceTemplate> = {}
+            const newDeviceTemplatesById: Record<ImportedDeviceId, DeviceTemplate> = {}
             doc.querySelectorAll(`[${DEVICE_ATTRIBUTE}]`).forEach(el => {
                 const templateDeviceId = el.getAttribute(DEVICE_ATTRIBUTE)
                 const templateControl = el.getAttribute(CONTROL_ATTRIBUTE)
@@ -46,7 +43,10 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
                 }
             })
 
-            setState({deviceTemplatesById: newDeviceTemplatesById, devicesMapping: {}})
+            const devicesMapping: Record<TemplateDeviceId, ImportedDeviceId | undefined> =
+                Object.fromEntries(Object.keys(newDeviceTemplatesById).map(id => [id, undefined]))
+
+            setState({deviceTemplatesById: newDeviceTemplatesById, devicesMapping})
         })
     }, [])
 
@@ -54,13 +54,15 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
         const deviceTemplatesList = Object.values(state.deviceTemplatesById)
         if (deviceTemplatesList.some(({id}) => state.devicesMapping[id] === undefined)) return
 
-        const deviceAssignmentsById: Record<ExternalDeviceId, DeviceAssignment> = {}
-        deviceAssignments.forEach(deviceConfig => {
-            deviceAssignmentsById[deviceConfig.id] = deviceConfig
+        const deviceAssignmentsById: Record<ImportedDeviceId, DeviceAssignment> = {}
+        deviceAssignments.forEach(deviceAssignment => {
+            deviceAssignmentsById[deviceAssignment.id] = deviceAssignment
         })
 
         deviceTemplatesList.forEach(deviceTemplate => {
-            const deviceAssignment = deviceAssignmentsById[deviceTemplate.id]
+            console.log(deviceTemplate, deviceAssignmentsById)
+            const importedDeviceId = state.devicesMapping[deviceTemplate.id]!
+            const deviceAssignment = deviceAssignmentsById[importedDeviceId]
             deviceTemplate.fill(deviceAssignment)
         })
     }, [deviceAssignments, state])
@@ -123,12 +125,11 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
           </table>
         }
         {
-            templateFilename !== undefined &&
-          <iframe
-            ref={ref}
-            className={styles.templateFilePreview}
-            src={templateFiles[templateFilename]}>
-          </iframe>
+            <iframe
+                ref={ref}
+                className={styles.templateFilePreview}
+                src={!templateFilename ? undefined : templateFiles[templateFilename]}>
+            </iframe>
         }
     </div>
 }

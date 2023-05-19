@@ -10,14 +10,15 @@ export const App: FC = () => {
     const [deviceAssignments, setDeviceAssignments] = useState<DeviceAssignment[]>([])
 
     const isValid = useMemo(
-        () => deviceAssignments.every(deviceConfig => deviceConfig.doAllModifiersHaveOwners()),
+        () => deviceAssignments
+            .every(deviceAssignment => deviceAssignment.doAllModifiersHaveOwners()),
         [deviceAssignments]
     )
 
     return <DeviceAssignmentsCtx.Provider value={deviceAssignments}>
         <main className={styles.root}>
             <DCSImporter className={styles.importer}
-                         onChange={setDeviceAssignments}/>
+                         onImport={setDeviceAssignments}/>
             {
                 deviceAssignments.length > 0 && <>
                 <DeviceAssignmentsEditor

@@ -1,1 +1,1 @@
-export type ExternalDeviceId = string
+export type ImportedDeviceId = string

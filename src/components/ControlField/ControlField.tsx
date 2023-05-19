@@ -8,7 +8,5 @@ interface Props {
 
 export const ControlField: FC<Props> = ({assignment}) => {
     if (!assignment) return null
-    return <div className={styles.root}>
-        {assignment.command}
-    </div>
+    return <div className={styles.root}>{assignment.command}</div>
 }

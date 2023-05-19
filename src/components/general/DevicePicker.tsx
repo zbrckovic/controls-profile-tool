@@ -1,6 +1,6 @@
+import {Device} from 'domain/device'
+import {DeviceId} from 'domain/hardware'
 import React, {FC} from 'react'
-import {Device} from "domain/device";
-import {DeviceId} from "domain/hardware";
 
 interface Props {
     devicesById: Record<DeviceId, Device>,

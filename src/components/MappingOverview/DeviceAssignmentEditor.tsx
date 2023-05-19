@@ -1,16 +1,16 @@
 import classNames from 'classnames'
 import {ModifierOwnerSelect} from 'components/general/ModifierOwnerSelect'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ExternalDeviceId} from 'domain/import/types'
+import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {Card} from '../general/Card'
-import styles from './DeviceConfig.module.css'
+import styles from './DeviceAssignmentEditor.module.css'
 
 interface Props {
     value: DeviceAssignment,
     onChange: (newValue: DeviceAssignment) => void,
-    setModifierOwnerToAll: (modifier: Control, owner: ExternalDeviceId | undefined) => void
+    setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
     className?: string,
 }
 
@@ -62,7 +62,8 @@ export const DeviceAssignmentEditor: FC<Props> = ({
                                                                 value={ownerId}
                                                                 onChange={newOwner => {
                                                                     onChange(
-                                                                        value.withModifierOwner(
+                                                                        value.withModifierOwnerForControl(
+                                                                            control,
                                                                             modifier,
                                                                             newOwner
                                                                         ))

@@ -1,20 +1,18 @@
+import {devicesById} from 'domain/hardware'
+import {ControlAssignment} from 'domain/import/control-assignment'
+import {DeviceAssignment} from 'domain/import/device-assignment'
+import {ImportedDeviceId} from 'domain/import/types'
+import {Control} from 'domain/types'
 import {readFile} from 'services/read-file'
 import {parseFilename} from './parse-filename'
-import {devicesById} from 'domain/hardware'
-import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ControlAssignment} from "domain/import/control-assignment";
-import {Control} from "../../domain/types";
-import {ExternalDeviceId} from "../../domain/import/types";
 
 export const importDeviceAssignments = async (files: File[]): Promise<DeviceAssignment[]> => {
-    const deviceAssignments = await Promise.all(Array.from(files).map(processFile))
-    fillInDeviceIdsForModifiers(deviceAssignments)
-    return deviceAssignments
-}
+    const deviceAssignments = await Promise.all(files.map(processFile))
 
-const fillInDeviceIdsForModifiers = (deviceAssignments: DeviceAssignment[]) => {
     deviceAssignments.forEach(deviceAssignment =>
         deviceAssignment.fillInModifierOwners(deviceAssignments))
+
+    return deviceAssignments
 }
 
 const processFile = async (file: File) => {
@@ -58,7 +56,7 @@ const parseFileContent = (text: string) => {
  */
 const parseCombo = (combo: string): {
     control: Control,
-    modifiers: Record<Control, ExternalDeviceId | undefined>
+    modifiers: Record<Control, ImportedDeviceId | undefined>
 } => {
     const parts = combo.split(' - ')
     if (parts.length === 1) {
@@ -66,7 +64,7 @@ const parseCombo = (combo: string): {
         return {control, modifiers: {}}
     }
     const control = parts[parts.length - 1]
-    const modifiers = Object.fromEntries(parts.slice(0, -1).map(modifier => [modifier, undefined]));
+    const modifiers = Object.fromEntries(parts.slice(0, -1).map(modifier => [modifier, undefined]))
 
     return {control, modifiers}
 }

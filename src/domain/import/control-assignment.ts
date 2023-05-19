@@ -1,4 +1,4 @@
-import {ExternalDeviceId} from "./types";
+import {ImportedDeviceId} from "./types";
 import {Control} from "../types";
 
 /**
@@ -19,11 +19,11 @@ export class ControlAssignment {
          * modifier has not yet been associated with its owner and that makes
          * this control assignment incomplete.
          */
-        readonly modifiers: Record<Control, ExternalDeviceId | undefined>
+        readonly modifiers: Record<Control, ImportedDeviceId | undefined>
     ) {
     }
 
-    withModifiers(modifiers: Record<Control, ExternalDeviceId>) {
+    withModifiers(modifiers: Record<Control, ImportedDeviceId>) {
         return new ControlAssignment(this.command, modifiers)
     }
 
@@ -31,13 +31,13 @@ export class ControlAssignment {
      * Returns a copy of `this` which associates `modifier` with `owner` in case
      * `modifier` exists.
      */
-    withModifierOwner(modifier: Control, owner?: ExternalDeviceId) {
+    withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         return new ControlAssignment(
             this.command,
             this.createModifiersWithModifierOwner(modifier, owner))
     }
 
-    setModifierOwner(modifier: Control, owner?: ExternalDeviceId) {
+    setModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         if (this.modifiers.hasOwnProperty(modifier)) {
             this.modifiers[modifier] = owner
         }
@@ -53,7 +53,7 @@ export class ControlAssignment {
      */
     private createModifiersWithModifierOwner(
         modifier: Control,
-        owner?: ExternalDeviceId
+        owner?: ImportedDeviceId
     ) {
         if (!this.modifiers.hasOwnProperty(modifier)) return this.modifiers
         return {...this.modifiers, [modifier]: owner}

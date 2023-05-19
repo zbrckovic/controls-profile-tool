@@ -1,6 +1,6 @@
+import classNames from 'classnames'
 import React, {FC, PropsWithChildren} from 'react'
 import styles from './Card.module.css'
-import classNames from 'classnames'
 
 interface Props extends PropsWithChildren {
     className?: string

@@ -1,14 +1,14 @@
 import {DeviceAssignmentEditor} from 'components/MappingOverview/DeviceAssignmentEditor'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ExternalDeviceId} from 'domain/import/types'
+import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
-import styles from './MappingOverview.module.css'
+import styles from './DeviceAssignmentsEditor.module.css'
 
 interface Props {
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
-    setModifierOwnerToAll: (modifier: Control, owner: ExternalDeviceId | undefined) => void
+    setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
 }
 
 export const DeviceAssignmentsEditor: FC<Props> = ({

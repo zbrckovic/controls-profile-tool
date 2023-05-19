@@ -1,10 +1,10 @@
 import React, {FC} from 'react'
 
 interface Props {
-    className?: string,
     templateFiles: string[],
     value?: string,
-    onChange: (value?: string) => void
+    onChange: (value?: string) => void,
+    className?: string
 }
 
 export const TemplateFilePicker: FC<Props> = ({
@@ -21,8 +21,8 @@ export const TemplateFilePicker: FC<Props> = ({
         }}>
         <option value={''}></option>
         {
-            Object.keys(templateFiles).map(name =>
-                <option key={name} value={name}>{name}</option>
+            templateFiles.map(filename =>
+                <option key={filename} value={filename}>{filename}</option>
             )
         }
     </select>

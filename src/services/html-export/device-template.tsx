@@ -5,6 +5,9 @@ import {Control} from 'domain/types'
 import React from 'react'
 import {createRoot, Root} from 'react-dom/client'
 
+/**
+ * Id of the device taken from template html.
+ */
 export type TemplateDeviceId = string;
 
 export class DeviceTemplate {
@@ -21,7 +24,8 @@ export class DeviceTemplate {
         Object
             .entries(this.fields)
             .forEach(([control, field]) => {
-                field.fill(deviceAssignment.mapping[control])
+                const controlAssignment = deviceAssignment.mapping[control]
+                field.fill(controlAssignment)
             })
     }
 }

@@ -1,9 +1,9 @@
 import {DeviceId} from 'domain/hardware'
-import {ExternalDeviceId} from "domain/import/types";
+import {ImportedDeviceId} from "domain/import/types";
 
 /**
- * Parses the name of the html file exported from DCS and returns an object containing the external
- * name of the device and internal id of the device in case the device is known to this application.
+ * Parses the name of the html file exported from DCS and returns an object containing external name
+ * of the device and internal id of the device in case the device is known to this application.
  */
 export const parseFilename = (filename: string): { name: string, id?: DeviceId } => {
     filename = getFilenameWithoutExtension(filename)
@@ -13,7 +13,7 @@ export const parseFilename = (filename: string): { name: string, id?: DeviceId }
 }
 
 /**
- * Returns the part of the filename without the ".html" extension.
+ * Returns the part of the filename without ".html" extension.
  */
 const getFilenameWithoutExtension = (filename: string) => {
     const lastIndexOfDot = filename.lastIndexOf('.')
@@ -27,7 +27,7 @@ const getFilenameWithoutExtension = (filename: string) => {
  * Some filenames contain a device model name followed by an id enclosed in curly braces. In such
  * cases it removes this latter part and returns only the device model name.
  */
-const extractDeviceName = (filename: string): ExternalDeviceId => {
+const extractDeviceName = (filename: string): ImportedDeviceId => {
     const match = filename.match(deviceNameWithIdRegex)
     return match === null ? filename : match[0]
 }

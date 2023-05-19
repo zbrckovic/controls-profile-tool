@@ -1,6 +1,6 @@
 import {Device} from 'domain/device'
 import {ControlAssignment} from './control-assignment'
-import {ExternalDeviceId} from './types'
+import {ImportedDeviceId} from './types'
 import {Control} from '../types'
 
 /**
@@ -11,13 +11,16 @@ export class DeviceAssignment {
         /**
          * The external id of this device assigned by the importer.
          */
-        readonly id: ExternalDeviceId,
+        readonly id: ImportedDeviceId,
+        /**
+         * The name of the device assigned by the importer.
+         */
         readonly name: string,
         /**
          * A known device to which this device corresponds.
          *
-         * Existence of this value means that this external device has been
-         * recognized as one of the known devices.
+         * Existence of this value means that this external device has been recognized as one of the
+         * known devices.
          */
         public device?: Device,
         /**
@@ -27,10 +30,24 @@ export class DeviceAssignment {
     ) {
     }
 
+    withModifierOwnerForControl(control: Control, modifier: Control, owner?: ImportedDeviceId) {
+        const controlAssignment = this.mapping[control]
+
+        return new DeviceAssignment(
+            this.id,
+            this.name,
+            this.device,
+            {
+                ...this.mapping,
+                [control]: controlAssignment.withModifierOwner(modifier, owner)
+            }
+        )
+    }
+
     /**
      * Returns a copy of `this` which associates `modifier` with `owner` in case `modifier` exists.
      */
-    withModifierOwner(modifier: Control, owner?: ExternalDeviceId) {
+    withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         return new DeviceAssignment(
             this.id,
             this.name,
@@ -74,7 +91,7 @@ export class DeviceAssignment {
     private static findTheModifierOwner(
         deviceAssignments: DeviceAssignment[],
         modifier: Control
-    ): ExternalDeviceId | undefined {
+    ): ImportedDeviceId | undefined {
         const deviceAssignment = deviceAssignments.find(deviceAssignment =>
             !(deviceAssignment.hasControl(modifier)) &&
             deviceAssignment.device?.hasControl(modifier))
