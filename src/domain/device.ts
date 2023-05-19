@@ -1,9 +1,15 @@
+import {Control} from "./types";
+import {DeviceId} from "./hardware";
+
+/**
+ * A device known by this application.
+ */
 export class Device {
     constructor(
-        readonly id: string,
+        readonly id: DeviceId,
         readonly manufacturer: string,
         readonly model: string,
-        readonly controls: string[]
+        readonly controls: Control[]
     ) {
     }
 
@@ -11,7 +17,7 @@ export class Device {
         return `${this.manufacturer} ${this.model}`
     }
 
-    hasControl(control: string) {
+    hasControl(control: Control) {
         return this.controls.includes(control)
     }
 }

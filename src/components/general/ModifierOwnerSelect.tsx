@@ -1,44 +1,47 @@
 import React, {FC, useContext} from 'react'
-import { DeviceConfigsCtx } from 'contexts'
+import {DeviceAssignmentsCtx} from 'contexts'
+import {Control} from "domain/types";
+import {ExternalDeviceId} from "domain/import/types";
 
 interface Props {
-  className?: string,
-  modifier: string,
-  owner: string,
-  onChange: (owner?: string) => void
+    className?: string,
+    modifier: Control,
+    value?: ExternalDeviceId,
+    onChange: (owner?: ExternalDeviceId) => void
 }
 
 export const ModifierOwnerSelect: FC<Props> = ({
-  className,
-  modifier,
-  owner,
-  onChange
-}) => {
-  const deviceConfigs = useContext(DeviceConfigsCtx)
+                                                   className,
+                                                   modifier,
+                                                   value,
+                                                   onChange
+                                               }) => {
+    const deviceAssignments = useContext(DeviceAssignmentsCtx)
 
-  const potentialModifierOwners = deviceConfigs.filter(deviceConfig =>
-    !(deviceConfig.mapping.hasOwnProperty(modifier)) &&
-    (
-      deviceConfig.device === undefined ||
-      deviceConfig.device.hasControl(modifier))
-  )
+    const potentialModifierOwners = deviceAssignments
+        .filter(deviceAssignment =>
+            !deviceAssignment.hasControl(modifier) &&
+            (
+                deviceAssignment.device === undefined ||
+                deviceAssignment.device.hasControl(modifier)))
+        .map(deviceAssignment => deviceAssignment.id)
 
-  return (
-    <select
-      className={className}
-      value={owner === undefined ? '' : owner}
-      onChange={({ target: { value: deviceId } }) => {
-        onChange(deviceId === '' ? undefined : deviceId)
-      }}
-    >
-      <option key={null} value={''}></option>
-      {
-        potentialModifierOwners.map(({ id }) => (
-          <option key={id} value={id}>
-            {id}
-          </option>
-        ))
-      }
-    </select>
-  )
+    return (
+        <select
+            className={className}
+            value={value === undefined ? '' : value}
+            onChange={({target: {value: newOwner}}) => {
+                onChange(newOwner === '' ? undefined : newOwner)
+            }}
+        >
+            <option key={null} value={''}></option>
+            {
+                potentialModifierOwners.map(potentialOwner => (
+                    <option key={potentialOwner} value={potentialOwner}>
+                        {potentialOwner}
+                    </option>
+                ))
+            }
+        </select>
+    )
 }

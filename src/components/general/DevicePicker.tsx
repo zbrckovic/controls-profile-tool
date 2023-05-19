@@ -1,8 +1,9 @@
 import React, {FC} from 'react'
-import {Device} from "../../model/device";
+import {Device} from "domain/device";
+import {DeviceId} from "domain/hardware";
 
 interface Props {
-    devicesById: Record<string, Device>,
+    devicesById: Record<DeviceId, Device>,
     value: Device,
     onChange: (device?: Device) => void
 }
@@ -10,11 +11,11 @@ interface Props {
 export const DevicePicker: FC<Props> = ({devicesById, value, onChange}) =>
     <select
         value={value === undefined ? '' : value.id}
-        onChange={({target: {value}}) => {
-            if (value === '') {
+        onChange={({target: {value: newDeviceId}}) => {
+            if (newDeviceId === '') {
                 onChange(undefined)
             } else {
-                onChange(devicesById[value])
+                onChange(devicesById[newDeviceId as DeviceId])
             }
 
         }}>

@@ -1,14 +1,14 @@
+import {ControlAssignment} from 'domain/import/control-assignment'
 import React, {FC} from 'react'
 import styles from './ControlField.module.css'
 
 interface Props {
-    control: string;
-    modifier: string;
+    assignment?: ControlAssignment;
 }
 
-export const ControlField: FC<Props> = ({control, modifier}) => {
-    if (control === undefined) return null
+export const ControlField: FC<Props> = ({assignment}) => {
+    if (!assignment) return null
     return <div className={styles.root}>
-        {control}
+        {assignment.command}
     </div>
 }

@@ -1,18 +1,19 @@
-import {Device} from './model/device'
+import {Device} from './device'
 
 /**
  * Internal id of a device.
  *
- * This enum can be considered a database of all devices known by this
- * application. If a device is missing from this list, that doesn't mean it's
- * not supported. It only means some convenient features will not work with it.
+ * This enum enumerates ids of all devices known by this application.
+ *
+ * If a device is missing from this enum, that doesn't mean it's not supported.
+ * It only means some convenient features will not work with it.
  */
-export const DeviceId = {
-    Thrustmaster_T16000M: 'Thrustmaster_T16000M'
+export enum DeviceId {
+    Thrustmaster_T16000M = 'Thrustmaster_T16000M'
 }
 
 /**
- * Information about every device known by this application.
+ * Every device known by this application.
  */
 export const devicesById = {
     [DeviceId.Thrustmaster_T16000M]: new Device(

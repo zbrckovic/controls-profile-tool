@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 
-.deviceConfig:not(:last-child) {
+.deviceAssignmentEditor:not(:last-child) {
     margin-bottom: 8px;
 }
 

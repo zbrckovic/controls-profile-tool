@@ -1,0 +1,1 @@
+export {DeviceAssignmentsEditor} from './DeviceAssignmentsEditor'

@@ -1,12 +1,12 @@
 import React, {FC} from 'react'
-import {importDeviceConfigs} from './import-device-configs'
 import styles from './DCSImporter.module.css'
 import classNames from 'classnames'
-import {DeviceConfig} from "../../model/device-config";
+import {DeviceAssignment} from 'domain/import/device-assignment';
+import {importDeviceAssignments} from "services/dcs-import/import-device-assignments";
 
 interface Props {
     className?: string,
-    onChange: (deviceConfigs: DeviceConfig[]) => void
+    onChange: (deviceAssignments: DeviceAssignment[]) => void
 }
 
 export const DCSImporter: FC<Props> = ({className, onChange}) =>
@@ -19,7 +19,7 @@ export const DCSImporter: FC<Props> = ({className, onChange}) =>
             multiple
             type="file"
             onChange={({target: {files}}) => {
-                importDeviceConfigs(files).then(onChange)
+                importDeviceAssignments(files ? Array.from(files) : []).then(onChange)
             }}
         />
     </div>

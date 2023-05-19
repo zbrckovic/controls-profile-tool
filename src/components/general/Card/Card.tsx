@@ -3,7 +3,6 @@ import styles from './Card.module.css'
 import classNames from 'classnames'
 
 interface Props extends PropsWithChildren {
-    id: string,
     className?: string
 }
 

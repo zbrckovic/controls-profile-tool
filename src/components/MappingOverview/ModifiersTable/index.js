@@ -1,1 +1,0 @@
-export { ModifiersTable } from './ModifiersTable'
