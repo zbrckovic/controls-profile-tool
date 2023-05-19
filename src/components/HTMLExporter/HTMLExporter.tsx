@@ -23,8 +23,8 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
     const [templateFilename, setTemplateFilename] = useState<string | undefined>(undefined)
     const [state, setState] = useState<State>({deviceTemplatesById: {}, devicesMapping: {}})
 
-    const ref = useCallback((iframeEl: HTMLIFrameElement) => {
-        iframeEl.addEventListener('load', () => {
+    const ref = useCallback((iframeEl: HTMLIFrameElement | null) => {
+        iframeEl?.addEventListener('load', () => {
             const doc = iframeEl.contentWindow?.document
             if (!doc) return
 
