@@ -5,36 +5,154 @@
     <title>title</title>
     <style>
         body {
+            position: relative;
+            border: 1px solid lightgray;
+            margin: auto;
             width: 297mm;
             height: 210mm;
-            border: 1px solid darkgray;
         }
 
-        .devices-image {
-            width: 100%;
+        .throttle {
+            position: absolute;
+            height: 130mm;
+            width: 130mm;
+            top: 50mm;
+            left: 0mm;
+        }
+
+        .stick {
+            position: absolute;
+            height: 140mm;
+            width: 140mm;
+            top: 50mm;
+            right: 0mm;
+        }
+
+        .device-image {
             opacity: 50%;
+            object-fit: contain;
         }
 
         *[data-device] {
-            width: 10%;
-            height: 4%;
-            border-radius: 4px;
+            box-sizing: border-box;
             background: white;
-            border: 2px solid black;
+            width: 34mm;
+            height: 18mm;
+            border: 2px solid lightgray;
             position: absolute;
+            z-index: 101;
+        }
+
+        .center-anchor {
             transform: translate(-50%, -50%);
+        }
+
+        .arrow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: visible;
+            z-index: 100;
+        }
+
+        .hat-switch {
+            position: absolute;
+            border: 0.8mm solid black;
+            border-radius: 4mm;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .hat-switch > * {
+            position: unset;
+        }
+
+        .xy-axes {
+            display: flex;
+            position: absolute;
+            border-radius: 4mm;
+            border: 0.8mm solid black;
+        }
+
+        .xy-axes > * {
+            position: unset;
+        }
+
+        .bordered {
+            border: 0.8mm solid black;
+            border-radius: 4mm;
         }
     </style>
 </head>
 <body>
-
-<svg width="297mm" height="210mm" viewBox="0 0 297 210" style="position: absolute">
-    <polyline points="0,0 297,210"
-              style="fill:none;stroke:black;stroke-width:1"
-    />
+<img class="device-image throttle" src="/resources/twcs.jpg"/>
+<img class="device-image stick" src="/resources/t16000m.jpg"/>
+<svg
+        class="arrow"
+        width="297mm"
+        height="210mm"
+        viewBox="0 0 297 210"
+        stroke-linecap="round"
+        stroke-width="0.5"
+        fill="none"
+        stroke="black"
+>
+    <polyline points="20,60 30,90"/>
+    <polyline points="30,40 41,85"/>
+    <polyline points="40,20 48,83"/>
+    <polyline points="70,40 55,80"/>
+    <polyline points="120,30 72,77"/>
+    <polyline points="140,80 85,89"/>
 </svg>
 
-<img class="devices-image" src="resources/t16000m_twcs.jpg"/>
+
+<div class="center-anchor bordered" style="left: 20mm; top: 60mm" data-device="Thrustmaster TWCS" data-ctrl="JOY_SLIDER1"></div>
+<div class="center-anchor bordered" style="left: 30mm; top: 40mm" data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN1"></div>
+<div class="center-anchor bordered" style="left: 40mm; top: 20mm" data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN2"></div>
+<div class="center-anchor bordered" style="left: 70mm; top: 40mm" data-device="Thrustmaster TWCS" data-ctrl="JOY_RZ"></div>
+<div class="xy-axes center-anchor" style="left: 100mm; top: 20mm">
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_X"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_Y"></div>
+</div>
+
+
+<div class="hat-switch center-anchor" style="left: 140mm; top: 80mm">
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_UL"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_U"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_UR"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_L"></div>
+    <div></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_R"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_DL"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_D"></div>
+    <div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_DR"></div>
+</div>
+
+
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_X"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_Y"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_Z"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_U"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_UR"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_R"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_DR"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_D"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_DL"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_L"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN_POV1_UL"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN3"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN4"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN5"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN6"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN7"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN8"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN9"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN10"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN11"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN12"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN13"></div>
+<div data-device="Thrustmaster TWCS" data-ctrl="JOY_BTN14"></div>
+
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_X"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_Y"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_Z"></div>
@@ -46,9 +164,9 @@
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN_POV1_DL"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN_POV1_L"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN_POV1_UL"></div>
-<div style="top: 5%; left: 76.7%" data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN1"></div>
-<div style="top: 27%; left: 76.7%" data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN2"></div>
-<div style="top: 14%; left: 62%" data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN3"></div>
+<div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN1"></div>
+<div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN2"></div>
+<div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN3"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN4"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN5"></div>
 <div data-device="Thrustmaster T.16000M" data-ctrl="JOY_BTN6"></div>
