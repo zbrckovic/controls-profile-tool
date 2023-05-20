@@ -9,6 +9,9 @@ interface Props {
     onImport: (deviceAssignments: DeviceAssignment[]) => void
 }
 
+/**
+ * Inputs selected files, parses them and produces device assignments.
+ */
 export const DCSImporter: FC<Props> = ({className, onImport}) =>
     <div className={classNames(className, styles.root)}>
         <p>Please upload html files with controls configuration exported from DCS.</p>

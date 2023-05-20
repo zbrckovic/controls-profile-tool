@@ -1,3 +1,4 @@
+import {DevicesMappingTable} from 'components/HTMLExporter/DevicesMappingTable'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import React, {FC, useCallback, useEffect, useState} from 'react'
@@ -41,7 +42,7 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
                         deviceTemplate = new DeviceTemplate(templateDeviceId)
                         newDeviceTemplatesById[templateDeviceId] = deviceTemplate
                     }
-                    deviceTemplate.setField(templateControl, new TemplateField(el))
+                    deviceTemplate.setField(templateControl, el)
                 }
             })
 
@@ -62,7 +63,7 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
         })
 
         deviceTemplatesList.forEach(deviceTemplate => {
-            console.log(deviceTemplate, deviceAssignmentsById)
+            // FIXME: When you change imported device assignments this becomes undefined
             const importedDeviceId = state.devicesMapping[deviceTemplate.id]!
             const deviceAssignment = deviceAssignmentsById[importedDeviceId]
             deviceTemplate.fill(deviceAssignment)
@@ -76,62 +77,21 @@ export const HTMLExporter: FC<Props> = ({deviceAssignments = []}) => {
             value={templateFilename}
             onChange={setTemplateFilename}/>
         {
-            Object.keys(state.deviceTemplatesById).length > 0 &&
-          <table>
-            <thead>
-            <tr>
-              <th>
-                Template Device
-              </th>
-              <th>
-                Imported Device
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                Object.keys(state.deviceTemplatesById).map(templateDeviceId =>
-                    <tr key={templateDeviceId}>
-                        <td>{templateDeviceId}</td>
-                        <td>
-                            <select
-                                value={state.devicesMapping[templateDeviceId] === undefined
-                                    ? ''
-                                    : state.devicesMapping[templateDeviceId]}
-                                onChange={({target: {value}}) => {
-                                    setState(old => ({
-                                        ...old,
-                                        devicesMapping: {
-                                            ...old.devicesMapping,
-                                            [templateDeviceId]: value
-                                        }
-                                    }))
-                                }}>
-                                <option value={''}></option>
-                                {
-                                    deviceAssignments.map(deviceAssignment =>
-                                        <option
-                                            key={deviceAssignment.id}
-                                            value={deviceAssignment.id}
-                                        >
-                                            {deviceAssignment.id}
-                                        </option>
-                                    )
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                )
-            }
-            </tbody>
-          </table>
+            Object.keys(state.deviceTemplatesById).length > 0 && (
+                <DevicesMappingTable
+                    className={styles.deviceMappingTable}
+                    devicesMapping={state.devicesMapping}
+                    onChange={(newDevicesMapping) => {
+                        setState(old => ({...old, devicesMapping: newDevicesMapping}))
+                    }}
+                    deviceAssignments={deviceAssignments}
+                />
+            )
         }
-        {
-            <iframe
-                ref={ref}
-                className={styles.templateFilePreview}
-                src={!templateFilename ? undefined : templateFiles[templateFilename]}>
-            </iframe>
-        }
+        <iframe
+            ref={ref}
+            className={styles.templateFilePreview}
+            src={!templateFilename ? undefined : templateFiles[templateFilename]}>
+        </iframe>
     </div>
 }

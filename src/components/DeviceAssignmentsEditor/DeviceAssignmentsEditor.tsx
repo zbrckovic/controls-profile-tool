@@ -1,4 +1,4 @@
-import {DeviceAssignmentEditor} from 'components/MappingOverview/DeviceAssignmentEditor'
+import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'

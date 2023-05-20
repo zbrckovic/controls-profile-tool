@@ -1,6 +1,6 @@
 import {DCSImporter} from 'components/DCSImporter'
 import {HTMLExporter} from 'components/HTMLExporter'
-import {DeviceAssignmentsEditor} from 'components/MappingOverview'
+import {DeviceAssignmentsEditor} from 'components/DeviceAssignmentsEditor'
 import {DeviceAssignmentsCtx} from 'contexts'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import React, {FC, useMemo, useState} from 'react'

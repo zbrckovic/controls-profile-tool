@@ -1,12 +1,15 @@
 import {ControlAssignment} from 'domain/import/control-assignment'
+import {Control} from 'domain/types'
 import React, {FC} from 'react'
-import styles from './ControlField.module.css'
 
 interface Props {
+    control: Control;
     assignment?: ControlAssignment;
 }
 
-export const ControlField: FC<Props> = ({assignment}) => {
-    if (!assignment) return null
-    return <div className={styles.root}>{assignment.command}</div>
-}
+export const ControlField: FC<Props> = ({control, assignment}) =>
+    <div style={{
+        background: 'red'
+    }}>
+        {assignment?.command ?? control}
+    </div>

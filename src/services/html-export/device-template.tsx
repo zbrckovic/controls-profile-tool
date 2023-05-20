@@ -16,14 +16,15 @@ export class DeviceTemplate {
     constructor(readonly id: TemplateDeviceId) {
     }
 
-    setField(control: Control, field: TemplateField) {
-        this.fields[control] = field
+    setField(control: Control, field: Element) {
+        this.fields[control] = new TemplateField(control, field)
     }
 
     fill(deviceAssignment: DeviceAssignment) {
         Object
             .entries(this.fields)
             .forEach(([control, field]) => {
+                console.log("filling", control, field)
                 const controlAssignment = deviceAssignment.mapping[control]
                 field.fill(controlAssignment)
             })
@@ -31,14 +32,16 @@ export class DeviceTemplate {
 }
 
 export class TemplateField {
-    private field: Root
+    private readonly control: Control
+    private readonly field: Root
 
-    constructor(element: Element) {
+    constructor(control: Control, element: Element) {
+        this.control = control
         this.field = createRoot(element)
     }
 
     fill(controlAssignment?: ControlAssignment) {
-        this.field.render(<ControlField assignment={controlAssignment}/>)
+        this.field.render(<ControlField control={this.control} assignment={controlAssignment}/>)
     }
 
 }

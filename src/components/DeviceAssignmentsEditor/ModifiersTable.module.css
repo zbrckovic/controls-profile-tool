@@ -1,0 +1,28 @@
+.root {
+    width: 100%;
+}
+
+.root .modifierCell {
+    width: 200px;
+    font-weight: bold;
+    color: darkred;
+}
+
+.root .modifierOwnerCell {
+}
+
+.root .modifierOwnerCell > div {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.root .ownerSelect {
+    margin-right: 8px;
+    width: 300px;
+}
+
+.root .setToAllButton {
+    flex: 0 100px;
+    cursor: pointer;
+}
