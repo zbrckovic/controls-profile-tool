@@ -51,21 +51,23 @@ export const TemplateRenderer: FC<Props> = ({
     }, [])
 
     useEffect(() => {
-        if (deviceAssignments === undefined) return
         if (deviceTemplates === undefined) return
-        if (devicesMapping === undefined) return
 
         const deviceTemplatesList = Object.values(deviceTemplates)
-        if (deviceTemplatesList.some(({id}) => devicesMapping[id] === undefined)) return
 
         const deviceAssignmentsById: Record<ImportedDeviceId, DeviceAssignment> = {}
-        deviceAssignments.forEach(deviceAssignment => {
-            deviceAssignmentsById[deviceAssignment.id] = deviceAssignment
-        })
+
+        if (deviceAssignments !== undefined) {
+            deviceAssignments.forEach(deviceAssignment => {
+                deviceAssignmentsById[deviceAssignment.id] = deviceAssignment
+            })
+        }
 
         deviceTemplatesList.forEach(deviceTemplate => {
-            const importedDeviceId = devicesMapping[deviceTemplate.id]!
-            const deviceAssignment = deviceAssignmentsById[importedDeviceId]
+            const importedDeviceId = devicesMapping?.[deviceTemplate.id]
+            const deviceAssignment = importedDeviceId !== undefined
+                ? deviceAssignmentsById[importedDeviceId]
+                : undefined
             deviceTemplate.fill(deviceAssignment)
         })
     }, [deviceAssignments, deviceTemplates, devicesMapping])

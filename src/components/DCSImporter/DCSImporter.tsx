@@ -14,7 +14,7 @@ interface Props {
  */
 export const DCSImporter: FC<Props> = ({className, onImport}) =>
     <div className={classNames(className, styles.root)}>
-        <p>Please upload html files with controls configuration exported from DCS.</p>
+        <p>Upload html files with controls configuration exported from DCS</p>
         <input
             multiple
             type="file"

@@ -20,12 +20,11 @@ export class DeviceTemplate {
         this.fields[control] = new TemplateField(control, field)
     }
 
-    fill(deviceAssignment: DeviceAssignment) {
+    fill(deviceAssignment?: DeviceAssignment) {
         Object
             .entries(this.fields)
             .forEach(([control, field]) => {
-                console.log("filling", control, field)
-                const controlAssignment = deviceAssignment.mapping[control]
+                const controlAssignment = deviceAssignment?.mapping[control]
                 field.fill(controlAssignment)
             })
     }

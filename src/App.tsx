@@ -35,12 +35,14 @@ export const App: FC = () => {
 
     return <DeviceAssignmentsCtx.Provider value={deviceAssignments}>
         <main className={styles.root}>
+            <h1>Import</h1>
             <DCSImporter
                 className={styles.importer}
                 onImport={deviceAssignments => setState({deviceAssignments})}/>
             {
                 deviceAssignments !== undefined && (
                     <DeviceAssignmentsEditor
+                        className={styles.deviceAssignmentsEditor}
                         value={deviceAssignments}
                         onChange={newDeviceAssignments => {
                             setState(old => ({...old, deviceAssignments: newDeviceAssignments}))
@@ -55,6 +57,8 @@ export const App: FC = () => {
                     />
                 )
             }
+            <h1>Export</h1>
+            <p>Pick a template</p>
             <TemplateFilePicker
                 className={styles.templateFilePicker}
                 templateFiles={Object.keys(templateFiles)}
@@ -67,6 +71,7 @@ export const App: FC = () => {
                 isValid &&
                 devicesMapping !== undefined &&
                 deviceTemplates !== undefined && <>
+                <p>Map template devices to imported devices</p>
                 <ExportConfigurator
                   className={styles.exportConfigurator}
                   deviceAssignments={deviceAssignments}

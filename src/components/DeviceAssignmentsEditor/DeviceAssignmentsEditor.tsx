@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
@@ -6,17 +7,19 @@ import React, {FC} from 'react'
 import styles from './DeviceAssignmentsEditor.module.css'
 
 interface Props {
+    className?: string,
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
 }
 
 export const DeviceAssignmentsEditor: FC<Props> = ({
+                                                       className,
                                                        value = [],
                                                        onChange,
                                                        setModifierOwnerToAll
                                                    }) =>
-    <div className={styles.root}>
+    <div className={classNames(className, styles.root)}>
         {
             value.map((deviceAssignment, i) =>
                 <DeviceAssignmentEditor

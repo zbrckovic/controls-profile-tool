@@ -8,8 +8,6 @@ interface Props {
 }
 
 export const ControlField: FC<Props> = ({control, assignment}) =>
-    <div style={{
-        background: 'red'
-    }}>
+    <div style={{color: assignment !== undefined ? 'black' : 'red'}}>
         {assignment?.command ?? control}
     </div>
