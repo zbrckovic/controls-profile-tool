@@ -1,4 +1,4 @@
-const ctx = require.context('templates', false, /\.html$/)
+const ctx = require.context('./templates', false, /\.html$/)
 
 type Filename = string
 type Url = string

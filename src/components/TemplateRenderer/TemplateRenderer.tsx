@@ -3,7 +3,7 @@ import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import React, {FC, useCallback, useEffect} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
-import {templateFiles} from 'templates'
+import {templateFiles} from 'template-files'
 import styles from './TemplateRenderer.module.css'
 
 interface Props {

@@ -16,6 +16,12 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js'
     },
+    devServer: {
+      static: {
+        directory: path.join(__dirname, './src/templates'),
+        publicPath: '/templates',
+      },
+    },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       modules: [
