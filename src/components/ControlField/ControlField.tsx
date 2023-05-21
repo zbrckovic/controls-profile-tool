@@ -3,11 +3,11 @@ import {Control} from 'domain/types'
 import React, {FC} from 'react'
 
 interface Props {
-    control: Control;
+    controls: Control[];
     assignments: ControlAssignment[];
 }
 
-export const ControlField: FC<Props> = ({control, assignments}) =>
+export const ControlField: FC<Props> = ({controls, assignments}) =>
     <div style={{color: assignments.length > 0 ? 'black' : 'red'}}>
-        {assignments.length === 0 ? control : assignments.map(a => a.command).join(", ")}
+        {assignments.length === 0 ? controls.join(';') : assignments.map(a => a.command).join(', ')}
     </div>
