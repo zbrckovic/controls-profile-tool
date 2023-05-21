@@ -39,6 +39,8 @@ const extractDeviceName = (filename: string): ImportedDeviceId => {
 const determineDeviceId = (externalDeviceName: string) => {
     if (externalDeviceName.startsWith('T.16000M')) {
         return DeviceId.Thrustmaster_T16000M
+    } else if (externalDeviceName.startsWith('TWCS')) {
+        return DeviceId.Thrustmaster_TWCS
     }
 }
 
