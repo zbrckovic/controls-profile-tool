@@ -31,6 +31,12 @@
     color: darkred;
 }
 
+.controlAssignmentsTable > tbody .modifierColumn {
+    color: darkblue;
+    font-weight: bold;
+    width: 200px;
+}
+
 .controlAssignmentsTable .commandColumn {
     font-family: "Saira Condensed", sans-serif;
 }

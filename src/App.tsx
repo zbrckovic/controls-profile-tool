@@ -65,6 +65,7 @@ export const App: FC = () => {
                 <DeviceAssignmentsEditor
                     className={styles.deviceAssignmentsEditor}
                     deviceAssignments={deviceAssignments}
+                    modifiers={modifiers}
                     value={deviceAssignments}
                     onChange={newDeviceAssignments => {
                         setState(old => ({...old, deviceAssignments: newDeviceAssignments}))

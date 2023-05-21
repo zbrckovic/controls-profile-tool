@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
+import {UNOWNED} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
@@ -9,6 +10,7 @@ import styles from './DeviceAssignmentsEditor.module.css'
 interface Props {
     className?: string,
     deviceAssignments: DeviceAssignment[],
+    modifiers: Record<ImportedDeviceId | typeof UNOWNED, Set<Control>>,
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
@@ -16,6 +18,7 @@ interface Props {
 
 export const DeviceAssignmentsEditor: FC<Props> = ({
                                                        className,
+                                                       modifiers,
                                                        deviceAssignments,
                                                        value = [],
                                                        onChange,
@@ -26,6 +29,7 @@ export const DeviceAssignmentsEditor: FC<Props> = ({
             value.map((deviceAssignment, i) =>
                 <DeviceAssignmentEditor
                     className={styles.deviceAssignmentEditor}
+                    modifiers={modifiers}
                     key={deviceAssignment.id}
                     deviceAssignments={deviceAssignments}
                     value={deviceAssignment}
