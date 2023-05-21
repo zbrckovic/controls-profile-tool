@@ -8,6 +8,7 @@ import {Card} from '../general/Card'
 import styles from './DeviceAssignmentEditor.module.css'
 
 interface Props {
+    deviceAssignments: DeviceAssignment[],
     value: DeviceAssignment,
     onChange: (newValue: DeviceAssignment) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
@@ -15,12 +16,13 @@ interface Props {
 }
 
 export const DeviceAssignmentEditor: FC<Props> = ({
+                                                      deviceAssignments,
                                                       value,
                                                       onChange,
                                                       setModifierOwnerToAll,
                                                       className,
-                                                  }) =>
-    <Card className={classNames(className, styles.root)}>
+                                                  }) => {
+    return <Card className={classNames(className, styles.root)}>
         <h2>{value.device?.toString() ?? 'Unknown Device'}</h2>
         <h3>{value.id}</h3>
         <table className={styles.controlAssignmentsTable}>
@@ -44,6 +46,7 @@ export const DeviceAssignmentEditor: FC<Props> = ({
                         <td className={styles.modifiersColumn}>
                             <ModifiersTable
                                 className={styles.modifiersTable}
+                                deviceAssignments={deviceAssignments}
                                 modifiers={controlAssignment.modifiers}
                                 onChange={(modifier, newOwner) => {
                                     onChange(
@@ -58,7 +61,9 @@ export const DeviceAssignmentEditor: FC<Props> = ({
                         </td>
                     </tr>
                 ))
+
             }
             </tbody>
         </table>
     </Card>
+}

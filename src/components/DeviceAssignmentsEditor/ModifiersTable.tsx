@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
@@ -7,6 +8,7 @@ import styles from './ModifiersTable.module.css'
 
 interface Props {
     className?: string
+    deviceAssignments: DeviceAssignment[],
     modifiers: Record<Control, ImportedDeviceId | undefined>
     onChange: (modifier: Control, owner: ImportedDeviceId | undefined) => void
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
@@ -14,6 +16,7 @@ interface Props {
 
 export const ModifiersTable: FC<Props> = ({
                                               className,
+                                              deviceAssignments,
                                               modifiers,
                                               onChange,
                                               setModifierOwnerToAll
@@ -32,6 +35,7 @@ export const ModifiersTable: FC<Props> = ({
                             <div>
                                 <ModifierOwnerSelect
                                     className={styles.ownerSelect}
+                                    deviceAssignments={deviceAssignments}
                                     modifier={modifier}
                                     value={ownerId}
                                     onChange={newOwner => {

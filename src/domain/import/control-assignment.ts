@@ -1,5 +1,5 @@
-import {ImportedDeviceId} from "./types";
-import {Control} from "../types";
+import {ImportedDeviceId} from './types'
+import {Control} from '../types'
 
 /**
  * Information assigned to a single control.
@@ -7,7 +7,6 @@ import {Control} from "../types";
 export class ControlAssignment {
     constructor(
         readonly control: string,
-
         /**
          * A description of the in-game function the control has.
          */
@@ -73,3 +72,5 @@ export class ControlAssignment {
         return {...this.modifiers, [modifier]: owner}
     }
 }
+
+export const UNOWNED = Symbol('unowned')

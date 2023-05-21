@@ -1,10 +1,11 @@
-import {DeviceAssignmentsCtx} from 'contexts'
+import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
-import React, {FC, useContext} from 'react'
+import React, {FC} from 'react'
 
 interface Props {
     className?: string,
+    deviceAssignments: DeviceAssignment[],
     modifier: Control,
     value?: ImportedDeviceId,
     onChange: (owner?: ImportedDeviceId) => void
@@ -12,16 +13,11 @@ interface Props {
 
 export const ModifierOwnerSelect: FC<Props> = ({
                                                    className,
+                                                   deviceAssignments,
                                                    modifier,
                                                    value,
                                                    onChange
                                                }) => {
-    const deviceAssignments = useContext(DeviceAssignmentsCtx)
-
-    if (deviceAssignments === undefined) {
-        throw new Error('Device assignment was undefined inside ModifierOwnerSelect')
-    }
-
     const potentialModifierOwners = deviceAssignments.filter(deviceAssignment =>
         !deviceAssignment.hasControl(modifier) &&
         (

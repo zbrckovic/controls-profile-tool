@@ -8,6 +8,7 @@ import styles from './DeviceAssignmentsEditor.module.css'
 
 interface Props {
     className?: string,
+    deviceAssignments: DeviceAssignment[],
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
@@ -15,6 +16,7 @@ interface Props {
 
 export const DeviceAssignmentsEditor: FC<Props> = ({
                                                        className,
+                                                       deviceAssignments,
                                                        value = [],
                                                        onChange,
                                                        setModifierOwnerToAll
@@ -25,6 +27,7 @@ export const DeviceAssignmentsEditor: FC<Props> = ({
                 <DeviceAssignmentEditor
                     className={styles.deviceAssignmentEditor}
                     key={deviceAssignment.id}
+                    deviceAssignments={deviceAssignments}
                     value={deviceAssignment}
                     onChange={newDeviceAssignment => {
                         onChange([...value.slice(0, i), newDeviceAssignment, ...value.slice(i + 1)])
