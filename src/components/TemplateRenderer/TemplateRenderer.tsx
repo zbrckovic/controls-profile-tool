@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
+import {Control} from 'domain/types'
 import React, {FC, useCallback, useEffect} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 import {templateFiles} from 'template-files'
@@ -34,15 +35,18 @@ export const TemplateRenderer: FC<Props> = ({
             const newDeviceTemplatesById: Record<ImportedDeviceId, DeviceTemplate> = {}
             doc.querySelectorAll(`[${DEVICE_ATTRIBUTE}]`).forEach(el => {
                 const templateDeviceId = el.getAttribute(DEVICE_ATTRIBUTE)
-                const templateControl = el.getAttribute(CONTROL_ATTRIBUTE)
+                const templateControlsTxt = el.getAttribute(CONTROL_ATTRIBUTE)
 
-                if (templateDeviceId && templateControl) {
+
+                if (templateDeviceId && templateControlsTxt) {
+                    const templateControls: Control[] = templateControlsTxt.split(';')
+
                     let deviceTemplate = newDeviceTemplatesById[templateDeviceId]
                     if (deviceTemplate === undefined) {
                         deviceTemplate = new DeviceTemplate(templateDeviceId)
                         newDeviceTemplatesById[templateDeviceId] = deviceTemplate
                     }
-                    deviceTemplate.setField(templateControl, el)
+                    deviceTemplate.setField(el, templateControls)
                 }
             })
 

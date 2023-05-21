@@ -25,6 +25,17 @@ export class ControlAssignment {
     ) {
     }
 
+    /**
+     * Returns a string which uniquely represents this combination of modifiers.
+     */
+    getModifierComboId() {
+        return JSON.stringify(Object.keys(this.modifiers))
+    }
+
+    hasModifiers() {
+        return Object.keys(this.modifiers).length > 0
+    }
+
     withModifiers(modifiers: Record<Control, ImportedDeviceId>) {
         return new ControlAssignment(this.control, this.command, modifiers)
     }

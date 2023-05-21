@@ -11,37 +11,35 @@ import {createRoot, Root} from 'react-dom/client'
 export type TemplateDeviceId = string;
 
 export class DeviceTemplate {
-    private readonly fields: Record<Control, TemplateField> = {}
+    private readonly fields: TemplateField[] = []
 
     constructor(readonly id: TemplateDeviceId) {
     }
 
-    setField(control: Control, field: Element) {
-        this.fields[control] = new TemplateField(control, field)
+    setField(element: Element, controls: Control[]) {
+        this.fields.push(new TemplateField(element, controls))
     }
 
     fill(deviceAssignment?: DeviceAssignment) {
-        Object
-            .entries(this.fields)
-            .forEach(([control, field]) => {
-                const controlAssignments = deviceAssignment?.controlAssignments
-                    .filter(ca => ca.control === control) ?? []
-                field.fill(controlAssignments)
-            })
+        this.fields.forEach(field => {
+            const controlAssignments = deviceAssignment?.controlAssignments
+                .filter(ca => field.controls.includes(ca.control)) ?? []
+            field.fill(controlAssignments)
+        })
     }
 }
 
 export class TemplateField {
-    private readonly control: Control
     private readonly field: Root
+    readonly controls: Control[]
 
-    constructor(control: Control, element: Element) {
-        this.control = control
+    constructor(element: Element, controls: Control[]) {
         this.field = createRoot(element)
+        this.controls = controls
     }
 
     fill(controlAssignments: ControlAssignment[]) {
-        this.field.render(<ControlField control={this.control} assignments={controlAssignments}/>)
+        this.field.render(<ControlField controls={this.controls} assignments={controlAssignments}/>)
     }
 
 }
