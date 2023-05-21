@@ -18,12 +18,15 @@ export const ModifierOwnerSelect: FC<Props> = ({
                                                }) => {
     const deviceAssignments = useContext(DeviceAssignmentsCtx)
 
-    const potentialModifierOwners = deviceAssignments
-        .filter(deviceAssignment =>
-            !deviceAssignment.hasControl(modifier) &&
-            (
-                deviceAssignment.device === undefined ||
-                deviceAssignment.device.hasControl(modifier)))
+    if (deviceAssignments === undefined) {
+        throw new Error('Device assignment was undefined inside ModifierOwnerSelect')
+    }
+
+    const potentialModifierOwners = deviceAssignments.filter(deviceAssignment =>
+        !deviceAssignment.hasControl(modifier) &&
+        (
+            deviceAssignment.device === undefined ||
+            deviceAssignment.device.hasControl(modifier)))
         .map(deviceAssignment => deviceAssignment.id)
 
     return (

@@ -33,33 +33,31 @@ export const DeviceAssignmentEditor: FC<Props> = ({
             </thead>
             <tbody>
             {
-                Object
-                    .entries(value.mapping)
-                    .map(([control, controlAssignment]) => (
-                        <tr key={control}>
-                            <td className={styles.controlColumn} title={control}>
-                                {control}
-                            </td>
-                            <td className={styles.commandColumn} title={controlAssignment.command}>
-                                {controlAssignment.command}
-                            </td>
-                            <td className={styles.modifiersColumn}>
-                                <ModifiersTable
-                                    className={styles.modifiersTable}
-                                    modifiers={controlAssignment.modifiers}
-                                    onChange={(modifier, newOwner) => {
-                                        onChange(
-                                            value.withModifierOwnerForControl(
-                                                control,
-                                                modifier,
-                                                newOwner
-                                            ))
-                                    }}
-                                    setModifierOwnerToAll={setModifierOwnerToAll}
-                                />
-                            </td>
-                        </tr>
-                    ))
+                value.controlAssignments.map((controlAssignment, i) => (
+                    <tr key={i}>
+                        <td className={styles.controlColumn} title={controlAssignment.control}>
+                            {controlAssignment.control}
+                        </td>
+                        <td className={styles.commandColumn} title={controlAssignment.command}>
+                            {controlAssignment.command}
+                        </td>
+                        <td className={styles.modifiersColumn}>
+                            <ModifiersTable
+                                className={styles.modifiersTable}
+                                modifiers={controlAssignment.modifiers}
+                                onChange={(modifier, newOwner) => {
+                                    onChange(
+                                        value.withModifierOwnerForControlAssignment(
+                                            i,
+                                            modifier,
+                                            newOwner
+                                        ))
+                                }}
+                                setModifierOwnerToAll={setModifierOwnerToAll}
+                            />
+                        </td>
+                    </tr>
+                ))
             }
             </tbody>
         </table>

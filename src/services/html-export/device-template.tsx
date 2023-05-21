@@ -24,8 +24,9 @@ export class DeviceTemplate {
         Object
             .entries(this.fields)
             .forEach(([control, field]) => {
-                const controlAssignment = deviceAssignment?.mapping[control]
-                field.fill(controlAssignment)
+                const controlAssignments = deviceAssignment?.controlAssignments
+                    .filter(ca => ca.control === control) ?? []
+                field.fill(controlAssignments)
             })
     }
 }
@@ -39,8 +40,8 @@ export class TemplateField {
         this.field = createRoot(element)
     }
 
-    fill(controlAssignment?: ControlAssignment) {
-        this.field.render(<ControlField control={this.control} assignment={controlAssignment}/>)
+    fill(controlAssignments: ControlAssignment[]) {
+        this.field.render(<ControlField control={this.control} assignments={controlAssignments}/>)
     }
 
 }

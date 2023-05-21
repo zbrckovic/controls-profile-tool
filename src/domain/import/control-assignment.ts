@@ -6,6 +6,8 @@ import {Control} from "../types";
  */
 export class ControlAssignment {
     constructor(
+        readonly control: string,
+
         /**
          * A description of the in-game function the control has.
          */
@@ -24,7 +26,7 @@ export class ControlAssignment {
     }
 
     withModifiers(modifiers: Record<Control, ImportedDeviceId>) {
-        return new ControlAssignment(this.command, modifiers)
+        return new ControlAssignment(this.control, this.command, modifiers)
     }
 
     /**
@@ -33,6 +35,7 @@ export class ControlAssignment {
      */
     withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         return new ControlAssignment(
+            this.control,
             this.command,
             this.createModifiersWithModifierOwner(modifier, owner))
     }

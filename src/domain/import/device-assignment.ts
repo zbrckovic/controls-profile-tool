@@ -26,21 +26,22 @@ export class DeviceAssignment {
         /**
          * An object which associates controls to their assignments.
          */
-        readonly mapping: Record<Control, ControlAssignment> = {}
+        readonly controlAssignments: ControlAssignment[] = []
     ) {
     }
 
-    withModifierOwnerForControl(control: Control, modifier: Control, owner?: ImportedDeviceId) {
-        const controlAssignment = this.mapping[control]
+    withModifierOwnerForControlAssignment(i: number, modifier: Control, owner?: ImportedDeviceId) {
+        const controlAssignment = this.controlAssignments[i]
 
         return new DeviceAssignment(
             this.id,
             this.name,
             this.device,
-            {
-                ...this.mapping,
-                [control]: controlAssignment.withModifierOwner(modifier, owner)
-            }
+            [
+                ...this.controlAssignments.slice(0, i),
+                controlAssignment.withModifierOwner(modifier, owner),
+                ...this.controlAssignments.slice(i + 1)
+            ]
         )
     }
 
@@ -52,32 +53,23 @@ export class DeviceAssignment {
             this.id,
             this.name,
             this.device,
-            Object.fromEntries(
-                Object
-                    .entries(this.mapping)
-                    .map(([control, controlConfig]) => [
-                        control,
-                        controlConfig.withModifierOwner(modifier, owner)
-                    ])
-            )
+            this.controlAssignments.map(ca => ca.withModifierOwner(modifier, owner))
         )
     }
 
     doAllModifiersHaveOwners() {
-        return Object
-            .values(this.mapping)
-            .every(controlConfig => controlConfig.doAllModifiersHaveOwners())
+        return this.controlAssignments.every(ca => ca.doAllModifiersHaveOwners())
     }
 
     hasControl(control: Control) {
-        return this.mapping.hasOwnProperty(control)
+        return this.controlAssignments.some(ca => ca.control === control)
     }
 
     fillInModifierOwners(deviceAssignments: DeviceAssignment[]) {
-        Object.values(this.mapping).forEach(controlConfig => {
-            Object.keys(controlConfig.modifiers).forEach(modifier => {
+        this.controlAssignments.forEach(ca => {
+            Object.keys(ca.modifiers).forEach(modifier => {
                 const owner = DeviceAssignment.findTheModifierOwner(deviceAssignments, modifier)
-                controlConfig.setModifierOwner(modifier, owner)
+                ca.setModifierOwner(modifier, owner)
             })
         })
     }

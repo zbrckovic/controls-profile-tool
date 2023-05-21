@@ -18,16 +18,16 @@ export const importDeviceAssignments = async (files: File[]): Promise<DeviceAssi
 const processFile = async (file: File) => {
     const {name, id} = parseFilename(file.name)
     const text = await readFile(file)
-    const mapping = parseFileContent(text)
+    const controlAssignments = parseFileContent(text)
     const device = id === undefined ? undefined : devicesById[id]
-    return new DeviceAssignment(file.name, name, device, mapping)
+    return new DeviceAssignment(file.name, name, device, controlAssignments)
 }
 
 const parseFileContent = (text: string) => {
     const doc = parseToDoc(text)
     const rows = doc.querySelectorAll('section > table > tbody > tr')
 
-    const mapping: Record<Control, ControlAssignment> = {}
+    const controlAssignments: ControlAssignment[] = []
 
     rows.forEach(row => {
         const cells = Array.from(row.getElementsByTagName('td'))
@@ -42,10 +42,10 @@ const parseFileContent = (text: string) => {
 
         const {control, modifiers} = parseCombo(comboTxt)
 
-        mapping[control] = new ControlAssignment(commandTxt, modifiers)
+        controlAssignments.push(new ControlAssignment(control, commandTxt, modifiers))
     })
 
-    return mapping
+    return controlAssignments
 }
 
 /**
