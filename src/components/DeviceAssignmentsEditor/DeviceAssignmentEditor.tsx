@@ -1,37 +1,32 @@
 import classNames from 'classnames'
 import {ModifiersTable} from 'components/DeviceAssignmentsEditor/ModifiersTable'
-import {UNOWNED} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
+import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
-import React, {FC, useMemo} from 'react'
+import React, {FC} from 'react'
 import {Card} from '../general/Card'
 import styles from './DeviceAssignmentEditor.module.css'
 
 interface Props {
     deviceAssignments: DeviceAssignment[],
-    modifiers: Record<ImportedDeviceId | typeof UNOWNED, Set<Control>>,
+    modifiers: Modifiers,
     value: DeviceAssignment,
     onChange: (newValue: DeviceAssignment) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
     className?: string,
 }
 
-export const DeviceAssignmentEditor: FC<Props> = function ({
-                                                               deviceAssignments,
-                                                               modifiers,
-                                                               value,
-                                                               onChange,
-                                                               setModifierOwnerToAll,
-                                                               className,
-                                                           }) {
-    const modifiersForDevice = useMemo(() => {
-        const modifiersForDeviceSet: Set<Control> | undefined = modifiers[value.id]
-        if (modifiersForDeviceSet === undefined) return []
-        return [...modifiersForDeviceSet]
-    }, [value, modifiers])
-
-    return <Card className={classNames(className, styles.root)}>
+export const DeviceAssignmentEditor: FC<Props> = ({
+                                                      deviceAssignments,
+                                                      modifiers,
+                                                      value,
+                                                      onChange,
+                                                      setModifierOwnerToAll,
+                                                      className,
+                                                  }) =>
+    <Card
+        className={classNames(className, styles.root)}>
         <h2>{value.device?.toString() ?? 'Unknown Device'}</h2>
         <h3>{value.id}</h3>
         <table className={styles.controlAssignmentsTable}>
@@ -71,14 +66,14 @@ export const DeviceAssignmentEditor: FC<Props> = function ({
                     </tr>
                 ))
             }
-            {modifiersForDevice.map(m => (
-                <tr>
-                    <td className={styles.modifierColumn}>{m}</td>
-                    <td>*</td>
-                </tr>
-            ))}
-
+            {Object
+                .entries(modifiers.getForOwner(value.id))
+                .map(([modifier, representation]) => (
+                    <tr key={modifier}>
+                        <td className={styles.modifierColumn}>{modifier}</td>
+                        <td>{representation}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     </Card>
-}

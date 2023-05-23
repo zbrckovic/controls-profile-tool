@@ -1,6 +1,8 @@
 import {ControlField} from 'components/ControlField'
+import {ModifierField} from 'components/ModifierField'
 import {ControlAssignment} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
+import {ModifierRepresentations, Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React from 'react'
 import {createRoot, Root} from 'react-dom/client'
@@ -20,11 +22,24 @@ export class DeviceTemplate {
         this.fields.push(new TemplateField(element, controls))
     }
 
-    fill(deviceAssignment?: DeviceAssignment) {
+    fill(modifiers: Modifiers, deviceAssignment?: DeviceAssignment) {
         this.fields.forEach(field => {
-            const controlAssignments = deviceAssignment?.controlAssignments
-                .filter(ca => field.controls.includes(ca.control)) ?? []
-            field.fill(controlAssignments)
+            // Check if the field is a modifier
+            if (field.controls.length === 1 && deviceAssignment !== undefined) {
+                const modifierRepresentations = modifiers.getForOwner(deviceAssignment.id)
+                if (modifierRepresentations !== undefined) {
+                    const [fieldControl] = field.controls
+                    if (modifierRepresentations.hasOwnProperty(fieldControl)) {
+                        field.fillWithModifier(fieldControl, modifierRepresentations[fieldControl])
+                        return
+                    }
+                }
+            }
+
+            const controlAssignments = deviceAssignment?.controlAssignments.filter(
+                ca => field.controls.includes(ca.control)) ?? []
+
+            field.fillWithControls(modifiers, controlAssignments)
         })
     }
 }
@@ -38,8 +53,15 @@ export class TemplateField {
         this.controls = controls
     }
 
-    fill(controlAssignments: ControlAssignment[]) {
-        this.field.render(<ControlField controls={this.controls} assignments={controlAssignments}/>)
+    fillWithControls(modifiers: Modifiers, controlAssignments: ControlAssignment[]) {
+        this.field.render(
+            <ControlField
+                modifiers={modifiers}
+                controls={this.controls}
+                assignments={controlAssignments}/>)
     }
 
+    fillWithModifier(modifier: Control, representation: string) {
+        this.field.render(<ModifierField modifier={modifier} representation={representation}/>)
+    }
 }

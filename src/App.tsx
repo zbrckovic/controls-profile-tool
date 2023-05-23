@@ -3,10 +3,9 @@ import {DeviceAssignmentsEditor} from 'components/DeviceAssignmentsEditor'
 import {ExportConfigurator} from 'components/ExportConfigurator'
 import {TemplateFilePicker} from 'components/TemplateFilePicker'
 import {TemplateRenderer} from 'components/TemplateRenderer'
-import {UNOWNED} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
-import {Control} from 'domain/types'
+import {Modifiers} from 'domain/modifiers'
 import React, {FC, useMemo, useState} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 import {templateFiles} from 'template-files'
@@ -34,24 +33,15 @@ export const App: FC = () => {
         [deviceAssignments]
     )
 
-    const modifiers = useMemo(() => {
-        const result: Record<ImportedDeviceId | typeof UNOWNED, Set<Control>> = {
-            [UNOWNED]: new Set()
-        }
-
-        deviceAssignments?.forEach(da => {
-            da.controlAssignments.forEach(ca => {
-                Object.entries(ca.modifiers).forEach(([modifier, owner]) => {
-                    let modifiersForOwner = result[owner ?? UNOWNED]
-                    if (modifiersForOwner === undefined) {
-                        modifiersForOwner = new Set()
-                        result[owner ?? UNOWNED] = modifiersForOwner
-                    }
-                    modifiersForOwner.add(modifier)
+    const modifiers: Modifiers = useMemo(() => {
+        const result: Modifiers = new Modifiers()
+        deviceAssignments?.forEach(deviceAssignment => {
+            deviceAssignment.controlAssignments.forEach(controlAssignment => {
+                Object.entries(controlAssignment.modifiers).forEach(([modifier, owner]) => {
+                    result.setModifierOwner(modifier, owner)
                 })
             })
         })
-
         return result
     }, [deviceAssignments])
 
@@ -59,7 +49,10 @@ export const App: FC = () => {
         <h1>Import</h1>
         <DCSImporter
             className={styles.importer}
-            onImport={deviceAssignments => setState({deviceAssignments})}/>
+            onImport={deviceAssignments => setState({
+                deviceAssignments,
+                templateFilename: Object.keys(templateFiles)[0]
+            })}/>
         {
             deviceAssignments !== undefined && (
                 <DeviceAssignmentsEditor
@@ -109,20 +102,30 @@ export const App: FC = () => {
         <TemplateRenderer
             className={styles.templateRenderer}
             deviceAssignments={deviceAssignments}
+            modifiers={modifiers}
             templateFilename={templateFilename}
             deviceTemplates={deviceTemplates}
             devicesMapping={devicesMapping}
             onDeviceTemplatesChange={newDeviceTemplates => {
-                const newDevicesMapping: Record<TemplateDeviceId, ImportedDeviceId | undefined> =
-                    Object.fromEntries(
-                        Object.keys(newDeviceTemplates).map(id => [id, undefined])
-                    )
+                setState(old => {
+                    return ({
+                        ...old,
+                        deviceTemplates: newDeviceTemplates,
+                        devicesMapping: Object.fromEntries(
+                            Object
+                                .keys(newDeviceTemplates)
+                                .map(id => {
+                                    console.log(old.deviceAssignments)
+                                    console.log(id)
 
-                setState(old => ({
-                    ...old,
-                    deviceTemplates: newDeviceTemplates,
-                    devicesMapping: newDevicesMapping
-                }))
+                                    return [
+                                        id,
+                                        old.deviceAssignments?.find(({device}) => device?.id === id)?.id
+                                    ]
+                                })
+                        )
+                    })
+                })
             }}/>
     </main>
 }

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
+import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React, {FC, useCallback, useEffect} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
@@ -10,6 +11,7 @@ import styles from './TemplateRenderer.module.css'
 interface Props {
     className?: string,
     deviceAssignments?: DeviceAssignment[],
+    modifiers: Modifiers,
     templateFilename?: string,
     deviceTemplates?: Record<ImportedDeviceId, DeviceTemplate>
     devicesMapping?: Record<TemplateDeviceId, ImportedDeviceId | undefined>
@@ -22,6 +24,7 @@ const CONTROL_ATTRIBUTE = 'data-ctrl'
 export const TemplateRenderer: FC<Props> = ({
                                                 className,
                                                 deviceAssignments,
+                                                modifiers,
                                                 templateFilename,
                                                 deviceTemplates,
                                                 devicesMapping,
@@ -46,6 +49,8 @@ export const TemplateRenderer: FC<Props> = ({
                         deviceTemplate = new DeviceTemplate(templateDeviceId)
                         newDeviceTemplatesById[templateDeviceId] = deviceTemplate
                     }
+
+
                     deviceTemplate.setField(el, templateControls)
                 }
             })
@@ -72,9 +77,10 @@ export const TemplateRenderer: FC<Props> = ({
             const deviceAssignment = importedDeviceId !== undefined
                 ? deviceAssignmentsById[importedDeviceId]
                 : undefined
-            deviceTemplate.fill(deviceAssignment)
+
+            deviceTemplate.fill(modifiers, deviceAssignment)
         })
-    }, [deviceAssignments, deviceTemplates, devicesMapping])
+    }, [deviceAssignments, modifiers, deviceTemplates, devicesMapping])
 
     return <iframe
         ref={ref}

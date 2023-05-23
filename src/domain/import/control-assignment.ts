@@ -72,5 +72,3 @@ export class ControlAssignment {
         return {...this.modifiers, [modifier]: owner}
     }
 }
-
-export const UNOWNED = Symbol('unowned')

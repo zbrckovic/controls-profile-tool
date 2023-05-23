@@ -9,8 +9,8 @@ import {Device} from './device'
  * It only means some convenient features will not work with it.
  */
 export enum DeviceId {
-    Thrustmaster_T16000M = 'Thrustmaster_T16000M',
-    Thrustmaster_TWCS = 'Thrustmaster_TWCS'
+    Thrustmaster_T16000M = 'Thrustmaster T.16000M',
+    Thrustmaster_TWCS = 'Thrustmaster TWCS'
 }
 
 /**

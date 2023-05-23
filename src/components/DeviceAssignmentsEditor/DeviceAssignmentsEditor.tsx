@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
-import {UNOWNED} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
+import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import styles from './DeviceAssignmentsEditor.module.css'
@@ -10,7 +10,7 @@ import styles from './DeviceAssignmentsEditor.module.css'
 interface Props {
     className?: string,
     deviceAssignments: DeviceAssignment[],
-    modifiers: Record<ImportedDeviceId | typeof UNOWNED, Set<Control>>,
+    modifiers: Modifiers,
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
     setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
