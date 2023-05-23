@@ -6,10 +6,11 @@ import {TemplateRenderer} from 'components/TemplateRenderer'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {ImportedDeviceId} from 'domain/import/types'
 import {Modifiers} from 'domain/modifiers'
-import React, {FC, useMemo, useState} from 'react'
+import React, {FC, useCallback, useMemo, useState} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 import {templateFiles} from 'template-files'
 import styles from './App.module.css'
+import {Control} from "./domain/types";
 
 interface State {
     deviceAssignments?: DeviceAssignment[]
@@ -45,6 +46,48 @@ export const App: FC = () => {
         return result
     }, [deviceAssignments])
 
+    const handleTemplateFileChange = useCallback((newTemplateFilename: string | undefined) => {
+        setState(old => ({...old, templateFilename: newTemplateFilename}))
+    }, [])
+
+    const handleDevicesMappingChange = useCallback((newDevicesMapping: Record<TemplateDeviceId, ImportedDeviceId | undefined>) => {
+        setState(old => ({...old, devicesMapping: newDevicesMapping}))
+    }, [])
+
+    const handleDeviceTemplatesChange = useCallback((newDeviceTemplates: Record<string, DeviceTemplate>) => {
+        setState(old => {
+            return ({
+                ...old,
+                deviceTemplates: newDeviceTemplates,
+                devicesMapping: Object.fromEntries(
+                    Object
+                                .keys(newDeviceTemplates)
+                                .map(id => {
+                                    console.log(old.deviceAssignments)
+                                    console.log(id)
+
+                                    return [
+                                        id,
+                                        old.deviceAssignments?.find(({device}) => device?.id === id)?.id
+                                    ]
+                                })
+                                )
+            })
+        })
+    }, [])
+
+    const handleSetModifierOwnerToAll = useCallback((modifier: Control, owner?: ImportedDeviceId) => {
+        setState(old => ({
+            ...old,
+            deviceAssignments: old.deviceAssignments?.map(deviceAssignment =>
+                deviceAssignment.withModifierOwner(modifier, owner))
+        }))
+    }, []);
+
+    const handleDeviceAssignmentsChange = useCallback((newDeviceAssignments: DeviceAssignment[]) => {
+        setState(old => ({...old, deviceAssignments: newDeviceAssignments}))
+    }, []);
+
     return <main className={styles.root}>
         <h1>Import</h1>
         <DCSImporter
@@ -60,16 +103,8 @@ export const App: FC = () => {
                     deviceAssignments={deviceAssignments}
                     modifiers={modifiers}
                     value={deviceAssignments}
-                    onChange={newDeviceAssignments => {
-                        setState(old => ({...old, deviceAssignments: newDeviceAssignments}))
-                    }}
-                    setModifierOwnerToAll={(modifier, owner) => {
-                        setState(old => ({
-                            ...old,
-                            deviceAssignments: deviceAssignments.map(deviceAssignment =>
-                                deviceAssignment.withModifierOwner(modifier, owner))
-                        }))
-                    }}
+                    onChange={handleDeviceAssignmentsChange}
+                    setModifierOwnerToAll={handleSetModifierOwnerToAll}
                 />
             )
         }
@@ -79,9 +114,7 @@ export const App: FC = () => {
             className={styles.templateFilePicker}
             templateFiles={Object.keys(templateFiles)}
             value={templateFilename}
-            onChange={newTemplateFilename => {
-                setState(old => ({...old, templateFilename: newTemplateFilename}))
-            }}/>
+            onChange={handleTemplateFileChange}/>
         {
             deviceAssignments !== undefined &&
             isValid &&
@@ -93,9 +126,7 @@ export const App: FC = () => {
               deviceAssignments={deviceAssignments}
               deviceTemplatesById={deviceTemplates}
               devicesMapping={devicesMapping}
-              onDevicesMappingChange={newDevicesMapping => {
-                  setState(old => ({...old, devicesMapping: newDevicesMapping}))
-              }}/>
+              onDevicesMappingChange={handleDevicesMappingChange}/>
 
           </>
         }
@@ -106,26 +137,6 @@ export const App: FC = () => {
             templateFilename={templateFilename}
             deviceTemplates={deviceTemplates}
             devicesMapping={devicesMapping}
-            onDeviceTemplatesChange={newDeviceTemplates => {
-                setState(old => {
-                    return ({
-                        ...old,
-                        deviceTemplates: newDeviceTemplates,
-                        devicesMapping: Object.fromEntries(
-                            Object
-                                .keys(newDeviceTemplates)
-                                .map(id => {
-                                    console.log(old.deviceAssignments)
-                                    console.log(id)
-
-                                    return [
-                                        id,
-                                        old.deviceAssignments?.find(({device}) => device?.id === id)?.id
-                                    ]
-                                })
-                        )
-                    })
-                })
-            }}/>
+            onDeviceTemplatesChange={handleDeviceTemplatesChange}/>
     </main>
 }

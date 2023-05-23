@@ -15,12 +15,12 @@ export const importDeviceAssignments = async (files: File[]): Promise<DeviceAssi
     return deviceAssignments
 }
 
-const processFile = async (file: File) => {
+const processFile = async (file: File, i: number) => {
     const {name, id} = parseFilename(file.name)
     const text = await readFile(file)
     const controlAssignments = parseFileContent(text)
     const device = id === undefined ? undefined : devicesById[id]
-    return new DeviceAssignment(file.name, name, device, controlAssignments)
+    return new DeviceAssignment(i, file.name, name, device, controlAssignments)
 }
 
 const parseFileContent = (text: string) => {

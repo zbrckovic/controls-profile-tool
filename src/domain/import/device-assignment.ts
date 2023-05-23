@@ -8,6 +8,7 @@ import {Control} from '../types'
  */
 export class DeviceAssignment {
     constructor(
+        readonly ordinal: number,
         /**
          * The external id of this device assigned by the importer.
          */
@@ -30,10 +31,15 @@ export class DeviceAssignment {
     ) {
     }
 
+    compare(deviceAssignment: DeviceAssignment) {
+        return this.ordinal - deviceAssignment.ordinal
+    }
+
     withModifierOwnerForControlAssignment(i: number, modifier: Control, owner?: ImportedDeviceId) {
         const controlAssignment = this.controlAssignments[i]
 
         return new DeviceAssignment(
+            this.ordinal,
             this.id,
             this.name,
             this.device,
@@ -50,6 +56,7 @@ export class DeviceAssignment {
      */
     withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         return new DeviceAssignment(
+            this.ordinal,
             this.id,
             this.name,
             this.device,

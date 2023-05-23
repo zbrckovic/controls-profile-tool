@@ -57,7 +57,7 @@ export const TemplateRenderer: FC<Props> = ({
 
             onDeviceTemplatesChange(newDeviceTemplatesById)
         })
-    }, [])
+    }, [onDeviceTemplatesChange])
 
     useEffect(() => {
         if (deviceTemplates === undefined) return

@@ -30,9 +30,18 @@ export class Modifiers {
         return this.owned[owner] ?? {}
     }
 
-    newRepresentation() {
+    private newRepresentation() {
         const representation = Modifiers.representations[this.representationIndex]
         this.representationIndex += 1
         return representation
+    }
+}
+
+class Modifier {
+    constructor(
+        readonly owner: ImportedDeviceId,
+        readonly control: Control,
+        readonly representation: string
+    ) {
     }
 }
