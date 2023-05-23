@@ -1,5 +1,5 @@
 import {Control} from '../types'
-import {ImportedDeviceId} from "./imported-device";
+import {ImportedDevice} from "./imported-device";
 
 /**
  * Information assigned to a single control.
@@ -13,14 +13,14 @@ export class ControlAssignment {
         readonly command: string,
         /**
          * An object whose keys are modifier controls which need to be combined
-         * with the main control. Values are ids of modifier owners i.e.
-         * devices to which modifiers belong to.
+         * with the main control. Values are modifier owners i.e. devices to
+         * which modifiers belong to.
          *
          * If the value associated to modifier is `undefined`, it means the
          * modifier has not yet been associated with its owner and that makes
          * this control assignment incomplete.
          */
-        readonly modifiers: Record<Control, ImportedDeviceId | undefined>
+        readonly modifiers: Record<Control, ImportedDevice | undefined>
     ) {
     }
 
@@ -35,7 +35,7 @@ export class ControlAssignment {
         return Object.keys(this.modifiers).length > 0
     }
 
-    withModifiers(modifiers: Record<Control, ImportedDeviceId>) {
+    withModifiers(modifiers: Record<Control, ImportedDevice>) {
         return new ControlAssignment(this.control, this.command, modifiers)
     }
 
@@ -43,21 +43,21 @@ export class ControlAssignment {
      * Returns a copy of `this` which associates `modifier` with `owner` in case
      * `modifier` exists.
      */
-    withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
+    withModifierOwner(modifier: Control, owner?: ImportedDevice) {
         return new ControlAssignment(
             this.control,
             this.command,
             this.createModifiersWithModifierOwner(modifier, owner))
     }
 
-    setModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
+    setModifierOwner(modifier: Control, owner?: ImportedDevice) {
         if (this.modifiers.hasOwnProperty(modifier)) {
             this.modifiers[modifier] = owner
         }
     }
 
     doAllModifiersHaveOwners() {
-        return Object.values(this.modifiers).every(id => id !== undefined)
+        return Object.values(this.modifiers).every(owner => owner !== undefined)
     }
 
     /**
@@ -66,7 +66,7 @@ export class ControlAssignment {
      */
     private createModifiersWithModifierOwner(
         modifier: Control,
-        owner?: ImportedDeviceId
+        owner?: ImportedDevice
     ) {
         if (!this.modifiers.hasOwnProperty(modifier)) return this.modifiers
         return {...this.modifiers, [modifier]: owner}

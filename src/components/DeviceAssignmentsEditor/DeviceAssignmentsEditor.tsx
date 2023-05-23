@@ -5,7 +5,7 @@ import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import styles from './DeviceAssignmentsEditor.module.css'
-import {ImportedDeviceId} from "../../domain/import/imported-device";
+import {ImportedDevice} from 'domain/import/imported-device';
 
 interface Props {
     className?: string,
@@ -13,7 +13,7 @@ interface Props {
     modifiers: Modifiers,
     value: DeviceAssignment[],
     onChange: (newValue: DeviceAssignment[]) => void,
-    setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
+    setModifierOwnerToAll: (modifier: Control, owner: ImportedDevice | undefined) => void
 }
 
 export const DeviceAssignmentsEditor: FC<Props> = ({

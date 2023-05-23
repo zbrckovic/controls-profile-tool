@@ -6,14 +6,14 @@ import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {Card} from '../general/Card'
 import styles from './DeviceAssignmentEditor.module.css'
-import {ImportedDeviceId} from "../../domain/import/imported-device";
+import {ImportedDevice} from "domain/import/imported-device";
 
 interface Props {
     deviceAssignments: DeviceAssignment[],
     modifiers: Modifiers,
     value: DeviceAssignment,
     onChange: (newValue: DeviceAssignment) => void,
-    setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
+    setModifierOwnerToAll: (modifier: Control, owner: ImportedDevice | undefined) => void
     className?: string,
 }
 
@@ -67,11 +67,11 @@ export const DeviceAssignmentEditor: FC<Props> = ({
                 ))
             }
             {Object
-                .entries(modifiers.getForOwner(value.importedDevice.id))
-                .map(([modifier, representation]) => (
-                    <tr key={modifier}>
-                        <td className={styles.modifierColumn}>{modifier}</td>
-                        <td>{representation}</td>
+                .entries(modifiers.getForOwner(value.importedDevice))
+                .map(([modifierControl, modifier]) => (
+                    <tr key={modifierControl}>
+                        <td className={styles.modifierColumn}>{modifierControl}</td>
+                        <td>{modifier.representation}</td>
                     </tr>
                 ))}
             </tbody>

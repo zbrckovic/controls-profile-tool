@@ -10,7 +10,7 @@ import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-temp
 import {templateFiles} from 'template-files'
 import styles from './App.module.css'
 import {Control} from "./domain/types";
-import {ImportedDeviceId} from "./domain/import/imported-device";
+import {ImportedDevice, ImportedDeviceId} from "./domain/import/imported-device";
 
 interface State {
     deviceAssignments?: DeviceAssignment[]
@@ -76,7 +76,7 @@ export const App: FC = () => {
         })
     }, [])
 
-    const handleSetModifierOwnerToAll = useCallback((modifier: Control, owner?: ImportedDeviceId) => {
+    const handleSetModifierOwnerToAll = useCallback((modifier: Control, owner?: ImportedDevice) => {
         setState(old => ({
             ...old,
             deviceAssignments: old.deviceAssignments?.map(deviceAssignment =>

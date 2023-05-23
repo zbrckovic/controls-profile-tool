@@ -24,7 +24,7 @@ export class DeviceAssignment {
     ) {
     }
 
-    withModifierOwnerForControlAssignment(i: number, modifier: Control, owner?: ImportedDeviceId) {
+    withModifierOwnerForControlAssignment(i: number, modifier: Control, owner?: ImportedDevice) {
         const controlAssignment = this.controlAssignments[i]
 
         return new DeviceAssignment(
@@ -41,7 +41,7 @@ export class DeviceAssignment {
     /**
      * Returns a copy of `this` which associates `modifier` with `owner` in case `modifier` exists.
      */
-    withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
+    withModifierOwner(modifier: Control, owner?: ImportedDevice) {
         return new DeviceAssignment(
             this.importedDevice,
             this.device,
@@ -75,11 +75,10 @@ export class DeviceAssignment {
     private static findTheModifierOwner(
         deviceAssignments: DeviceAssignment[],
         modifier: Control
-    ): ImportedDeviceId | undefined {
+    ): ImportedDevice | undefined {
         const deviceAssignment = deviceAssignments.find(deviceAssignment =>
             !(deviceAssignment.hasControl(modifier)) &&
             deviceAssignment.device?.hasControl(modifier))
-
-        return deviceAssignment?.importedDevice.id
+        return deviceAssignment?.importedDevice
     }
 }

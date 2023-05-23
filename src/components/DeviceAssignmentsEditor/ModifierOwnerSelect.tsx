@@ -1,14 +1,14 @@
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {Control} from 'domain/types'
-import React, {FC} from 'react'
-import {ImportedDeviceId} from "../../domain/import/imported-device";
+import React, {FC, useMemo} from 'react'
+import {ImportedDevice, ImportedDeviceId} from "domain/import/imported-device";
 
 interface Props {
     className?: string,
     deviceAssignments: DeviceAssignment[],
     modifier: Control,
-    value?: ImportedDeviceId,
-    onChange: (owner?: ImportedDeviceId) => void
+    value?: ImportedDevice,
+    onChange: (owner?: ImportedDevice) => void
 }
 
 export const ModifierOwnerSelect: FC<Props> = ({
@@ -18,29 +18,39 @@ export const ModifierOwnerSelect: FC<Props> = ({
                                                    value,
                                                    onChange
                                                }) => {
-    const potentialModifierOwners = deviceAssignments.filter(deviceAssignment =>
-        !deviceAssignment.hasControl(modifier) &&
-        (
-            deviceAssignment.device === undefined ||
-            deviceAssignment.device.hasControl(modifier)))
-        .map(deviceAssignment => deviceAssignment.importedDevice.id)
+    const potentialOwners = useMemo(() => {
+        const result: Record<ImportedDeviceId, ImportedDevice> = {}
+        deviceAssignments
+            .filter(da => isDeviceAssignmentPotentialModifierOwner(da, modifier))
+            .map(da => da.importedDevice)
+            .forEach(device => {
+                result[device.id] = device
+            })
+        return result
+    }, [deviceAssignments, modifier])
 
     return (
         <select
             className={className}
-            value={value === undefined ? '' : value}
-            onChange={({target: {value: newOwner}}) => {
-                onChange(newOwner === '' ? undefined : newOwner)
+            value={value === undefined ? '' : value.id}
+            onChange={({target: {value: newOwnerId}}) => {
+                onChange(newOwnerId === '' ? undefined : potentialOwners[newOwnerId])
             }}
         >
             <option key={null} value={''}></option>
             {
-                potentialModifierOwners.map(potentialOwner => (
-                    <option key={potentialOwner} value={potentialOwner}>
-                        {potentialOwner}
+                Object.values(potentialOwners).map(potentialOwner => (
+                    <option key={potentialOwner.id} value={potentialOwner.id}>
+                        {potentialOwner.id}
                     </option>
                 ))
             }
         </select>
     )
 }
+
+const isDeviceAssignmentPotentialModifierOwner = (deviceAssignment: DeviceAssignment, modifier: Control) =>
+    !deviceAssignment.hasControl(modifier) &&
+    (
+        deviceAssignment.device === undefined ||
+        deviceAssignment.device.hasControl(modifier))

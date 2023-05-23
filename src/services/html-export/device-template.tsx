@@ -26,11 +26,11 @@ export class DeviceTemplate {
         this.fields.forEach(field => {
             // Check if the field is a modifier
             if (field.controls.length === 1 && deviceAssignment !== undefined) {
-                const modifierRepresentations = modifiers.getForOwner(deviceAssignment.importedDevice.id)
+                const modifierRepresentations = modifiers.getForOwner(deviceAssignment.importedDevice)
                 if (modifierRepresentations !== undefined) {
                     const [fieldControl] = field.controls
                     if (modifierRepresentations.hasOwnProperty(fieldControl)) {
-                        field.fillWithModifier(fieldControl, modifierRepresentations[fieldControl])
+                        field.fillWithModifier(fieldControl, modifierRepresentations[fieldControl].representation)
                         return
                     }
                 }

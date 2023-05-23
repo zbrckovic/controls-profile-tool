@@ -1,33 +1,36 @@
 import {Control} from 'domain/types'
-import {ImportedDeviceId} from "./import/imported-device";
-
-export type ModifierRepresentations = Record<Control, string>
+import {ImportedDevice, ImportedDeviceId} from "./import/imported-device";
 
 export class Modifiers {
     private static representations = ['*', '+', '$']
     private representationIndex = 0
 
     private readonly unowned = new Set<Control>
-    private readonly owned: Record<ImportedDeviceId, ModifierRepresentations> = {}
+    private readonly owned: Record<ImportedDeviceId, Record<Control, Modifier>> = {}
 
-    setModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
+    setModifierOwner(control: Control, owner?: ImportedDevice) {
         if (owner === undefined) {
-            this.unowned.add(modifier)
+            this.unowned.add(control)
         } else {
-            let modifierRepresentations = this.owned[owner]
-            if (modifierRepresentations === undefined) {
-                modifierRepresentations = {}
-                this.owned[owner] = modifierRepresentations
+            let modifiersForDevice = this.owned[owner.id]
+            if (modifiersForDevice === undefined) {
+                modifiersForDevice = {}
+                this.owned[owner.id] = modifiersForDevice
             }
-            const currentRepresentation = modifierRepresentations[modifier]
-            if (currentRepresentation === undefined) {
-                modifierRepresentations[modifier] = this.newRepresentation()
+            const currentModifier = modifiersForDevice[control]
+            if (currentModifier === undefined) {
+                modifiersForDevice[control] = new Modifier(
+                    owner,
+                    this.representationIndex,
+                    control,
+                    this.newRepresentation()
+                )
             }
         }
     }
 
-    getForOwner(owner: ImportedDeviceId): ModifierRepresentations {
-        return this.owned[owner] ?? {}
+    getForOwner(owner: ImportedDevice): Record<Control, Modifier> {
+        return this.owned[owner.id] ?? {}
     }
 
     private newRepresentation() {
@@ -37,11 +40,17 @@ export class Modifiers {
     }
 }
 
-class Modifier {
+export class Modifier {
     constructor(
-        readonly owner: ImportedDeviceId,
+        readonly owner: ImportedDevice,
+        readonly ordinal: number,
         readonly control: Control,
         readonly representation: string
     ) {
+    }
+
+    compare(other: Modifier) {
+        const ownersOrder = this.owner.compare(other.owner)
+        return ownersOrder !== 0 ? ownersOrder : this.ordinal - other.ordinal
     }
 }

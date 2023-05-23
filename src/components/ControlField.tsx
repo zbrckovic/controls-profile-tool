@@ -1,5 +1,5 @@
 import {ControlAssignment} from 'domain/import/control-assignment'
-import {Modifiers} from 'domain/modifiers'
+import {Modifier, Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import groupBy from 'lodash.groupby'
 import React, {FC, useMemo} from 'react'
@@ -22,31 +22,31 @@ export const ControlField: FC<Props> = ({modifiers, controls, assignments}) => {
         {hasValue ? Object
             .entries(groupedPerModifierCombo)
             .map(([comboId, controlAssignments]) => {
-                    const modifierRepresentations: [Control, string | undefined][] = Object
+                    const modifierObjects: [Control, Modifier | undefined][] = Object
                         .entries(controlAssignments[0].modifiers)
-                        .map(([modifier, owner]) =>
+                        .map(([modifierControl, owner]) =>
                             owner === undefined
-                                ? [modifier, undefined]
-                                : [modifier, modifiers.getForOwner(owner)?.[modifier]])
+                                ? [modifierControl, undefined]
+                                : [modifierControl, modifiers.getForOwner(owner)?.[modifierControl]])
 
                     return <div key={comboId} style={{display: 'flex'}}>
                         <div style={{flex: '1'}}>
                             {findLongestCommonPrefix(...controlAssignments.map(ca => ca.command))}
                         </div>
                         {
-                            modifierRepresentations.length > 0 && <div style={{flex: '0'}}>
+                            modifierObjects.length > 0 && <div style={{flex: '0'}}>
                                 {
-                                    modifierRepresentations.map(([modifier, repr]) =>
+                                    modifierObjects.map(([modifierControl, modifierObject]) =>
                                         <div
                                             style={{fontSize: '20px', fontWeight: 'bold'}}
-                                            key={modifier}
-                                            title={modifier}
+                                            key={modifierControl}
+                                            title={modifierControl}
                                         >
-                                            {repr}
+                                            {modifierObject?.representation}
                                         </div>
                                     )
                                 }
-                          </div>
+                            </div>
                         }
                     </div>
                 }

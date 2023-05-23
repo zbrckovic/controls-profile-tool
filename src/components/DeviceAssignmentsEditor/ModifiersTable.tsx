@@ -4,14 +4,14 @@ import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {ModifierOwnerSelect} from './ModifierOwnerSelect'
 import styles from './ModifiersTable.module.css'
-import {ImportedDeviceId} from "../../domain/import/imported-device";
+import {ImportedDevice, ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     className?: string
     deviceAssignments: DeviceAssignment[],
-    modifiers: Record<Control, ImportedDeviceId | undefined>
-    onChange: (modifier: Control, owner: ImportedDeviceId | undefined) => void
-    setModifierOwnerToAll: (modifier: Control, owner: ImportedDeviceId | undefined) => void
+    modifiers: Record<Control, ImportedDevice | undefined>
+    onChange: (modifier: Control, owner: ImportedDevice | undefined) => void
+    setModifierOwnerToAll: (modifier: Control, owner: ImportedDevice | undefined) => void
 }
 
 export const ModifiersTable: FC<Props> = ({
