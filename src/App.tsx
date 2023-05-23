@@ -4,13 +4,13 @@ import {ExportConfigurator} from 'components/ExportConfigurator'
 import {TemplateFilePicker} from 'components/TemplateFilePicker'
 import {TemplateRenderer} from 'components/TemplateRenderer'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import {Modifiers} from 'domain/modifiers'
 import React, {FC, useCallback, useMemo, useState} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 import {templateFiles} from 'template-files'
 import styles from './App.module.css'
 import {Control} from "./domain/types";
+import {ImportedDeviceId} from "./domain/import/imported-device";
 
 interface State {
     deviceAssignments?: DeviceAssignment[]
@@ -68,7 +68,7 @@ export const App: FC = () => {
 
                                     return [
                                         id,
-                                        old.deviceAssignments?.find(({device}) => device?.id === id)?.id
+                                        old.deviceAssignments?.find(({device}) => device?.id === id)?.importedDevice.id
                                     ]
                                 })
                                 )
