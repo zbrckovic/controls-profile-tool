@@ -2,7 +2,7 @@ import {ControlField} from 'components/ControlField'
 import {ModifierField} from 'components/ModifierField'
 import {ControlAssignment} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ModifierRepresentations, Modifiers} from 'domain/modifiers'
+import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React from 'react'
 import {createRoot, Root} from 'react-dom/client'
@@ -26,7 +26,7 @@ export class DeviceTemplate {
         this.fields.forEach(field => {
             // Check if the field is a modifier
             if (field.controls.length === 1 && deviceAssignment !== undefined) {
-                const modifierRepresentations = modifiers.getForOwner(deviceAssignment.id)
+                const modifierRepresentations = modifiers.getForOwner(deviceAssignment.importedDevice.id)
                 if (modifierRepresentations !== undefined) {
                     const [fieldControl] = field.controls
                     if (modifierRepresentations.hasOwnProperty(fieldControl)) {
