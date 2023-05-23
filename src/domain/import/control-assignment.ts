@@ -1,12 +1,16 @@
-import {Control} from '../types'
 import {ImportedDevice} from "./imported-device";
+
+/**
+ * Control of a device: button, axis, switch...
+ */
+export type Control = string
 
 /**
  * Information assigned to a single control.
  */
 export class ControlAssignment {
     constructor(
-        readonly control: string,
+        readonly control: Control,
         /**
          * A description of the in-game function the control has.
          */

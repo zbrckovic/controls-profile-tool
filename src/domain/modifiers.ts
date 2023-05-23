@@ -1,5 +1,5 @@
-import {Control} from 'domain/types'
 import {ImportedDevice, ImportedDeviceId} from "./import/imported-device";
+import {Control} from "./import/control-assignment";
 
 export class Modifiers {
     private static representations = ['*', '+', '$']

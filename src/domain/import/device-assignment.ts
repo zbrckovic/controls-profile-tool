@@ -1,7 +1,6 @@
 import {Device} from 'domain/device'
-import {ControlAssignment} from './control-assignment'
-import {Control} from '../types'
-import {ImportedDevice, ImportedDeviceId} from "./imported-device";
+import {Control, ControlAssignment} from './control-assignment'
+import {ImportedDevice} from "./imported-device";
 
 
 /**

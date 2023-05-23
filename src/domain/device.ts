@@ -1,5 +1,5 @@
-import {Control} from "./types";
 import {DeviceId} from "./hardware";
+import {Control} from "./import/control-assignment";
 
 /**
  * A device known by this application.

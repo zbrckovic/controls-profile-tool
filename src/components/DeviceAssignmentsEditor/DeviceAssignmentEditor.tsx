@@ -2,11 +2,11 @@ import classNames from 'classnames'
 import {ModifiersTable} from 'components/DeviceAssignmentsEditor/ModifiersTable'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {Modifiers} from 'domain/modifiers'
-import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {Card} from '../general/Card'
 import styles from './DeviceAssignmentEditor.module.css'
 import {ImportedDevice} from "domain/import/imported-device";
+import {Control} from "../../domain/import/control-assignment";
 
 interface Props {
     deviceAssignments: DeviceAssignment[],

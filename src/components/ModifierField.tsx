@@ -1,5 +1,5 @@
-import {Control} from 'domain/types'
 import React, {FC} from 'react'
+import {Control} from "../domain/import/control-assignment";
 
 interface Props {
     modifier: Control,

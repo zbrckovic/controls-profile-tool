@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {Modifiers} from 'domain/modifiers'
-import {Control} from 'domain/types'
 import React, {FC, useCallback, useEffect} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 import {templateFiles} from 'template-files'
 import styles from './TemplateRenderer.module.css'
 import {ImportedDeviceId} from "../../domain/import/imported-device";
+import {Control} from "../../domain/import/control-assignment";
 
 interface Props {
     className?: string,

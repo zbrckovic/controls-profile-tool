@@ -1,9 +1,8 @@
 import {ControlField} from 'components/ControlField'
 import {ModifierField} from 'components/ModifierField'
-import {ControlAssignment} from 'domain/import/control-assignment'
+import {Control, ControlAssignment} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {Modifiers} from 'domain/modifiers'
-import {Control} from 'domain/types'
 import React from 'react'
 import {createRoot, Root} from 'react-dom/client'
 

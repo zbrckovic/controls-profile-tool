@@ -1,6 +1,5 @@
-import {ControlAssignment} from 'domain/import/control-assignment'
+import {Control, ControlAssignment} from 'domain/import/control-assignment'
 import {Modifier, Modifiers} from 'domain/modifiers'
-import {Control} from 'domain/types'
 import groupBy from 'lodash.groupby'
 import React, {FC, useMemo} from 'react'
 

@@ -1,7 +1,7 @@
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {Control} from 'domain/types'
 import React, {FC, useMemo} from 'react'
 import {ImportedDevice, ImportedDeviceId} from "domain/import/imported-device";
+import {Control} from "../../domain/import/control-assignment";
 
 interface Props {
     className?: string,

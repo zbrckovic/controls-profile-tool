@@ -2,10 +2,10 @@ import classNames from 'classnames'
 import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
 import {DeviceAssignment} from 'domain/import/device-assignment'
 import {Modifiers} from 'domain/modifiers'
-import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import styles from './DeviceAssignmentsEditor.module.css'
 import {ImportedDevice} from 'domain/import/imported-device';
+import {Control} from "../../domain/import/control-assignment";
 
 interface Props {
     className?: string,

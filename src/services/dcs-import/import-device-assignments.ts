@@ -1,10 +1,9 @@
 import {devicesById} from 'domain/hardware'
-import {ControlAssignment} from 'domain/import/control-assignment'
+import {Control, ControlAssignment} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {Control} from 'domain/types'
 import {readFile} from 'services/read-file'
 import {parseFilename} from './parse-filename'
-import {ImportedDevice, ImportedDeviceId} from "../../domain/import/imported-device";
+import {ImportedDevice} from "../../domain/import/imported-device";
 
 export const importDeviceAssignments = async (files: File[]): Promise<DeviceAssignment[]> => {
     const deviceAssignments = await Promise.all(files.map(processFile))
@@ -58,7 +57,7 @@ const parseFileContent = (text: string) => {
  */
 const parseCombo = (combo: string): {
     control: Control,
-    modifiers: Record<Control, ImportedDeviceId | undefined>
+    modifiers: Record<Control, ImportedDevice | undefined>
 } => {
     const parts = combo.split(' - ')
     if (parts.length === 1) {

@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {ModifierOwnerSelect} from './ModifierOwnerSelect'
 import styles from './ModifiersTable.module.css'
-import {ImportedDevice, ImportedDeviceId} from "../../domain/import/imported-device";
+import {ImportedDevice} from "../../domain/import/imported-device";
+import {Control} from "../../domain/import/control-assignment";
 
 interface Props {
     className?: string
