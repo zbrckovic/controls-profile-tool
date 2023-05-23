@@ -1,10 +1,10 @@
 import {devicesById} from 'domain/hardware'
 import {ControlAssignment} from 'domain/import/control-assignment'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
 import {readFile} from 'services/read-file'
 import {parseFilename} from './parse-filename'
+import {ImportedDevice, ImportedDeviceId} from "../../domain/import/imported-device";
 
 export const importDeviceAssignments = async (files: File[]): Promise<DeviceAssignment[]> => {
     const deviceAssignments = await Promise.all(files.map(processFile))
@@ -20,7 +20,8 @@ const processFile = async (file: File, i: number) => {
     const text = await readFile(file)
     const controlAssignments = parseFileContent(text)
     const device = id === undefined ? undefined : devicesById[id]
-    return new DeviceAssignment(i, file.name, name, device, controlAssignments)
+    const importedDevice = new ImportedDevice(file.name, i, name)
+    return new DeviceAssignment(importedDevice, device, controlAssignments)
 }
 
 const parseFileContent = (text: string) => {

@@ -1,22 +1,15 @@
 import {Device} from 'domain/device'
 import {ControlAssignment} from './control-assignment'
-import {ImportedDeviceId} from './types'
 import {Control} from '../types'
+import {ImportedDevice, ImportedDeviceId} from "./imported-device";
+
 
 /**
  * Information about control assignments for a single device.
  */
 export class DeviceAssignment {
     constructor(
-        readonly ordinal: number,
-        /**
-         * The external id of this device assigned by the importer.
-         */
-        readonly id: ImportedDeviceId,
-        /**
-         * The name of the device assigned by the importer.
-         */
-        readonly name: string,
+        readonly importedDevice: ImportedDevice,
         /**
          * A known device to which this device corresponds.
          *
@@ -31,17 +24,11 @@ export class DeviceAssignment {
     ) {
     }
 
-    compare(deviceAssignment: DeviceAssignment) {
-        return this.ordinal - deviceAssignment.ordinal
-    }
-
     withModifierOwnerForControlAssignment(i: number, modifier: Control, owner?: ImportedDeviceId) {
         const controlAssignment = this.controlAssignments[i]
 
         return new DeviceAssignment(
-            this.ordinal,
-            this.id,
-            this.name,
+            this.importedDevice,
             this.device,
             [
                 ...this.controlAssignments.slice(0, i),
@@ -56,9 +43,7 @@ export class DeviceAssignment {
      */
     withModifierOwner(modifier: Control, owner?: ImportedDeviceId) {
         return new DeviceAssignment(
-            this.ordinal,
-            this.id,
-            this.name,
+            this.importedDevice,
             this.device,
             this.controlAssignments.map(ca => ca.withModifierOwner(modifier, owner))
         )
@@ -95,6 +80,6 @@ export class DeviceAssignment {
             !(deviceAssignment.hasControl(modifier)) &&
             deviceAssignment.device?.hasControl(modifier))
 
-        return deviceAssignment?.id
+        return deviceAssignment?.importedDevice.id
     }
 }

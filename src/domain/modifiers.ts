@@ -1,5 +1,5 @@
-import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
+import {ImportedDeviceId} from "./import/imported-device";
 
 export type ModifierRepresentations = Record<Control, string>
 

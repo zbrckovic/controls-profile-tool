@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import {DevicesMappingTable} from 'components/ExportConfigurator/DevicesMappingTable'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import React, {FC} from 'react'
 import {DeviceTemplate, TemplateDeviceId} from 'services/html-export/device-template'
 
 import styles from './ExportConfigurator.module.css'
+import {ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     className?: string,

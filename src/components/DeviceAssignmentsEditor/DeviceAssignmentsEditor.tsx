@@ -1,11 +1,11 @@
 import classNames from 'classnames'
 import {DeviceAssignmentEditor} from 'components/DeviceAssignmentsEditor/DeviceAssignmentEditor'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import styles from './DeviceAssignmentsEditor.module.css'
+import {ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     className?: string,
@@ -30,7 +30,7 @@ export const DeviceAssignmentsEditor: FC<Props> = ({
                 <DeviceAssignmentEditor
                     className={styles.deviceAssignmentEditor}
                     modifiers={modifiers}
-                    key={deviceAssignment.id}
+                    key={deviceAssignment.importedDevice.id}
                     deviceAssignments={deviceAssignments}
                     value={deviceAssignment}
                     onChange={newDeviceAssignment => {

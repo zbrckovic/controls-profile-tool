@@ -1,5 +1,5 @@
-import {ImportedDeviceId} from './types'
 import {Control} from '../types'
+import {ImportedDeviceId} from "./imported-device";
 
 /**
  * Information assigned to a single control.

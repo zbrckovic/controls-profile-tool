@@ -1,7 +1,7 @@
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
+import {ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     className?: string,
@@ -23,7 +23,7 @@ export const ModifierOwnerSelect: FC<Props> = ({
         (
             deviceAssignment.device === undefined ||
             deviceAssignment.device.hasControl(modifier)))
-        .map(deviceAssignment => deviceAssignment.id)
+        .map(deviceAssignment => deviceAssignment.importedDevice.id)
 
     return (
         <select

@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import {ModifiersTable} from 'components/DeviceAssignmentsEditor/ModifiersTable'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import {Modifiers} from 'domain/modifiers'
 import {Control} from 'domain/types'
 import React, {FC} from 'react'
 import {Card} from '../general/Card'
 import styles from './DeviceAssignmentEditor.module.css'
+import {ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     deviceAssignments: DeviceAssignment[],
@@ -28,7 +28,7 @@ export const DeviceAssignmentEditor: FC<Props> = ({
     <Card
         className={classNames(className, styles.root)}>
         <h2>{value.device?.toString() ?? 'Unknown Device'}</h2>
-        <h3>{value.id}</h3>
+        <h3>{value.importedDevice.id}</h3>
         <table className={styles.controlAssignmentsTable}>
             <thead>
             <tr>
@@ -67,7 +67,7 @@ export const DeviceAssignmentEditor: FC<Props> = ({
                 ))
             }
             {Object
-                .entries(modifiers.getForOwner(value.id))
+                .entries(modifiers.getForOwner(value.importedDevice.id))
                 .map(([modifier, representation]) => (
                     <tr key={modifier}>
                         <td className={styles.modifierColumn}>{modifier}</td>

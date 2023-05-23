@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 import {DeviceAssignment} from 'domain/import/device-assignment'
-import {ImportedDeviceId} from 'domain/import/types'
 import React, {FC} from 'react'
 import {TemplateDeviceId} from 'services/html-export/device-template'
 import styles from './DevicesMappingTable.module.css'
+import {ImportedDeviceId} from "../../domain/import/imported-device";
 
 interface Props {
     className?: string,
@@ -44,7 +44,7 @@ export const DevicesMappingTable: FC<Props> = ({
                             }}>
                             <option value={''}></option>
                             {
-                                deviceAssignments.map(({id}) =>
+                                deviceAssignments.map(({importedDevice: {id}}) =>
                                     <option key={id} value={id}>{id}</option>
                                 )
                             }
