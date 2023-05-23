@@ -12,7 +12,7 @@ module.exports = (env, argv) => {
     mode,
     entry: './src/index.tsx',
     output: {
-      publicPath: isDevelopment ? '/' : '/controls-profile-tool',
+      publicPath: isDevelopment ? '/' : '/controls-profile-tool/',
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js'
     },
